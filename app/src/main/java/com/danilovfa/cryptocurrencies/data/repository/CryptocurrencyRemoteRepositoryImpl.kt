@@ -1,10 +1,13 @@
 package com.danilovfa.cryptocurrencies.data.repository
 
+import com.danilovfa.cryptocurrencies.data.remote.CryptocurrencyAPI
 import com.danilovfa.cryptocurrencies.domain.model.CryptocurrencyDetails
 import com.danilovfa.cryptocurrencies.domain.model.CryptocurrencyItem
 import com.danilovfa.cryptocurrencies.domain.repository.CryptocurrencyRemoteRepository
 
-class CryptocurrencyRemoteRepositoryImpl: CryptocurrencyRemoteRepository {
+class CryptocurrencyRemoteRepositoryImpl(
+    private val api: CryptocurrencyAPI
+): CryptocurrencyRemoteRepository {
     override suspend fun getCryptocurrenciesByName(page: Int): List<CryptocurrencyItem> {
         TODO("Not yet implemented")
     }
