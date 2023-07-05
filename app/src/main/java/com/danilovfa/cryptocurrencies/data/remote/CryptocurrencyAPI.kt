@@ -2,7 +2,6 @@ package com.danilovfa.cryptocurrencies.data.remote
 
 import com.danilovfa.cryptocurrencies.data.remote.dto.ChartDto
 import com.danilovfa.cryptocurrencies.data.remote.dto.CryptocurrenciesItemDto
-import com.danilovfa.cryptocurrencies.data.remote.dto.CryptocurrencyDetailsDto
 import com.danilovfa.cryptocurrencies.utils.Constants.Companion.LOCALE_DEFAULT
 import com.danilovfa.cryptocurrencies.utils.Constants.Companion.PER_PAGE_DEFAULT
 import com.danilovfa.cryptocurrencies.utils.Constants.Companion.PRECISION_DEFAULT
@@ -27,26 +26,6 @@ interface CryptocurrencyAPI {
         @Query("precision") precision: Int = PRECISION_DEFAULT,
         @Query("vs_currency") vsCurrency: String = VS_CURRENCY_DEFAULT
     ): Response<ChartDto>
-
-    /**
-     * @param id Pass the coin id (can be obtained from /coins) eg. bitcoin
-     * @param localization Include all localized languages in response (true/false)
-     * @param tickers Include tickers data (true/false)
-     * @param marketData Include market_data (true/false)
-     * @param communityData Include community_data data (true/false)
-     * @param developerData Include developer_data data (true/false)
-     * @param sparkline Include sparkline 7 days data (eg. true, false)
-     */
-    @GET("coins/{id}")
-    fun getCryptocurrencyDetails(
-        @Path("id") id: String,
-        @Query("localization") localization: Boolean = false,
-        @Query("tickers") tickers: Boolean = false,
-        @Query("market_data") marketData: Boolean = true,
-        @Query("community_data") communityData: Boolean = false,
-        @Query("developer_data") developerData: Boolean = false,
-        @Query("sparkline") sparkline: Boolean = false
-    ): Response<CryptocurrencyDetailsDto>
 
     /**
      * @param vsCurrency The target currency of market data (usd, eur, jpy, etc.)
