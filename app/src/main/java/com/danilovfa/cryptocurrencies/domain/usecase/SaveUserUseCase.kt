@@ -7,6 +7,6 @@ class SaveUserUseCase(
     private val repository: UserRepository
 ) {
     fun execute(user: User) {
-
+        TODO()
     }
 }

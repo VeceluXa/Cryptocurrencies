@@ -10,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
 class CryptocurrencyRemoteRepositoryImpl(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val api: CryptocurrencyAPI
-): CryptocurrencyRemoteRepository {
+) : CryptocurrencyRemoteRepository {
     override suspend fun getCryptocurrenciesByName(page: Int): List<CryptocurrencyItem> {
         TODO("Not yet implemented")
     }

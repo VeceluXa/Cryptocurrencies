@@ -7,15 +7,17 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val appModule = module {
-    viewModel { DetailsViewModel(
-        detailsUseCase = get()
-    ) }
-    viewModel { MainViewModel(
-        getCryptocurrenciesByNameUseCase = get(),
-        getCryptocurrenciesByPriceUseCase = get()
-    ) }
-    viewModel { UserSettingsViewModel(
-        getUserUseCase = get(),
-        saveUserUseCase = get()
-    ) }
+    viewModel { DetailsViewModel(detailsUseCase = get()) }
+    viewModel {
+        MainViewModel(
+            getCryptocurrenciesByNameUseCase = get(),
+            getCryptocurrenciesByPriceUseCase = get()
+        )
+    }
+    viewModel {
+        UserSettingsViewModel(
+            getUserUseCase = get(),
+            saveUserUseCase = get()
+        )
+    }
 }
