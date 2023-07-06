@@ -7,7 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
+import com.danilovfa.cryptocurrencies.R
+import com.danilovfa.cryptocurrencies.app.MainActivity
 import com.danilovfa.cryptocurrencies.app.viewmodel.MainViewModel
 import com.danilovfa.cryptocurrencies.databinding.FragmentMainBinding
 
@@ -26,6 +27,11 @@ class MainFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        (requireActivity() as MainActivity).title = getString(R.string.cryptocurrencies)
     }
 
     private fun navigateToDetailsScreen(coinId: String) {

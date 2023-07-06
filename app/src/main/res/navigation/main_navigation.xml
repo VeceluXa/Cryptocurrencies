@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/navigation_main"
         android:name="com.danilovfa.cryptocurrencies.app.fragment.MainFragment"
-        android:label="fragment_main"
+        android:label="@string/cryptocurrencies"
         tools:layout="@layout/fragment_main" >
         <action
             android:id="@+id/action_mainFragment_to_detailsFragment"
@@ -17,7 +17,6 @@
     <fragment
         android:id="@+id/navigation_details"
         android:name="com.danilovfa.cryptocurrencies.app.fragment.DetailsFragment"
-        android:label="fragment_details"
         tools:layout="@layout/fragment_details" >
         <argument
             android:name="coinId"
@@ -26,6 +25,6 @@
     <fragment
         android:id="@+id/navigation_settings"
         android:name="com.danilovfa.cryptocurrencies.app.fragment.UserSettingsFragment"
-        android:label="fragment_user_settings"
+        android:label="@string/settings"
         tools:layout="@layout/fragment_user_settings" />
 </navigation>
