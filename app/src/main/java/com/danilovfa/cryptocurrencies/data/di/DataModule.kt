@@ -2,6 +2,7 @@ package com.danilovfa.cryptocurrencies.data.di
 
 import androidx.room.Room
 import com.danilovfa.cryptocurrencies.data.local.CryptocurrencyDatabase
+import com.danilovfa.cryptocurrencies.data.local.PreferenceManager
 import com.danilovfa.cryptocurrencies.data.remote.CryptocurrencyAPI
 import com.danilovfa.cryptocurrencies.data.repository.CryptocurrencyLocalRepositoryImpl
 import com.danilovfa.cryptocurrencies.data.repository.CryptocurrencyRemoteRepositoryImpl
@@ -16,7 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 val dataModule = module {
 
-    ///////////////////  Retrofit  //////////////////////
+    ///////////////////  Remote  //////////////////////
     single {
         val loggingInterceptor = HttpLoggingInterceptor().apply {
             level = Level.BODY
@@ -39,7 +40,7 @@ val dataModule = module {
         retrofit.create(CryptocurrencyAPI::class.java)
     }
 
-    //////////////// Room /////////////////
+    //////////////// Local /////////////////
     single {
         Room.databaseBuilder(
             context = get(),
@@ -53,8 +54,12 @@ val dataModule = module {
         db.cryptocurrencyDao
     }
 
+    single {
+        PreferenceManager(context = get())
+    }
+
     ///////////// Repositories ///////////////
     single { CryptocurrencyLocalRepositoryImpl(remoteRepository = get()) }
     single { CryptocurrencyRemoteRepositoryImpl(api = get()) }
-    single { UserRepositoryImpl() }
+    single { UserRepositoryImpl(preferenceManager = get()) }
 }
