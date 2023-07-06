@@ -18,7 +18,11 @@
         android:id="@+id/navigation_details"
         android:name="com.danilovfa.cryptocurrencies.app.fragment.DetailsFragment"
         android:label="fragment_details"
-        tools:layout="@layout/fragment_details" />
+        tools:layout="@layout/fragment_details" >
+        <argument
+            android:name="coinId"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_settings"
         android:name="com.danilovfa.cryptocurrencies.app.fragment.UserSettingsFragment"
