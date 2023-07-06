@@ -4,8 +4,11 @@ import com.danilovfa.cryptocurrencies.data.remote.CryptocurrencyAPI
 import com.danilovfa.cryptocurrencies.domain.model.CryptocurrencyDetails
 import com.danilovfa.cryptocurrencies.domain.model.CryptocurrencyItem
 import com.danilovfa.cryptocurrencies.domain.repository.CryptocurrencyRemoteRepository
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 
 class CryptocurrencyRemoteRepositoryImpl(
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val api: CryptocurrencyAPI
 ): CryptocurrencyRemoteRepository {
     override suspend fun getCryptocurrenciesByName(page: Int): List<CryptocurrencyItem> {
