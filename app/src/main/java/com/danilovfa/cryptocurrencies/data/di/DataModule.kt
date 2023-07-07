@@ -2,7 +2,6 @@ package com.danilovfa.cryptocurrencies.data.di
 
 import androidx.room.Room
 import com.danilovfa.cryptocurrencies.data.local.CryptocurrencyDatabase
-import com.danilovfa.cryptocurrencies.data.local.PreferenceManager
 import com.danilovfa.cryptocurrencies.data.remote.CryptocurrencyAPI
 import com.danilovfa.cryptocurrencies.data.repository.CryptocurrencyLocalRepositoryImpl
 import com.danilovfa.cryptocurrencies.data.repository.CryptocurrencyRemoteRepositoryImpl
@@ -54,12 +53,8 @@ val dataModule = module {
         db.cryptocurrencyDao
     }
 
-    single {
-        PreferenceManager(context = get())
-    }
-
     ///////////// Repositories ///////////////
     single { CryptocurrencyLocalRepositoryImpl(remoteRepository = get()) }
     single { CryptocurrencyRemoteRepositoryImpl(api = get()) }
-    single { UserRepositoryImpl(preferenceManager = get()) }
+    single { UserRepositoryImpl(dao = get()) }
 }

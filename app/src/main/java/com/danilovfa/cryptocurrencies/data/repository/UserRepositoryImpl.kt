@@ -1,17 +1,29 @@
 package com.danilovfa.cryptocurrencies.data.repository
 
-import com.danilovfa.cryptocurrencies.data.local.PreferenceManager
+import com.danilovfa.cryptocurrencies.data.local.CryptocurrencyDao
+import com.danilovfa.cryptocurrencies.data.local.mapper.UserEntityMapper
 import com.danilovfa.cryptocurrencies.domain.model.User
 import com.danilovfa.cryptocurrencies.domain.repository.UserRepository
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class UserRepositoryImpl(
-    private val preferenceManager: PreferenceManager
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
+    private val dao: CryptocurrencyDao
 ) : UserRepository {
-    override fun getUser(): User {
-        return preferenceManager.getUser()
+    private val userMapper = UserEntityMapper()
+    override suspend fun getUser(): User {
+        val user: User
+        withContext(ioDispatcher) {
+            user = userMapper.fromEntity(dao.getUser(0))
+        }
+        return user
     }
 
-    override fun saveUser(user: User) {
-        preferenceManager.saveUser(user)
+    override suspend fun saveUser(user: User) {
+        withContext(ioDispatcher) {
+            dao.saveUser(userMapper.fromDomain(user))
+        }
     }
 }
