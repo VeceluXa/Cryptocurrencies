@@ -1,6 +1,7 @@
 package com.danilovfa.cryptocurrencies.app
 
 import android.app.Application
+import com.danilovfa.cryptocurrencies.app.di.appModule
 import com.danilovfa.cryptocurrencies.data.di.dataModule
 import com.danilovfa.cryptocurrencies.domain.di.domainModule
 import org.koin.android.ext.koin.androidContext
@@ -17,7 +18,7 @@ class App : Application() {
             androidContext(this@App)
             modules(
                 listOf(
-                    domainModule, dataModule
+                    domainModule, dataModule, appModule
                 )
             )
         }

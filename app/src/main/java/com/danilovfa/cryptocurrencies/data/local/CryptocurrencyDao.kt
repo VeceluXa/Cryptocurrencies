@@ -26,7 +26,7 @@ interface CryptocurrencyDao {
     suspend fun getItems(): List<CryptocurrencyItemEntity>
 
     @Query("SELECT * FROM users WHERE id = :id")
-    suspend fun getUser(id: Int): UserEntity
+    suspend fun getUser(id: Int): UserEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveUser(user: UserEntity)

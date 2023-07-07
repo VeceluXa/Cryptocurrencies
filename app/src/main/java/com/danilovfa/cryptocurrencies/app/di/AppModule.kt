@@ -17,7 +17,8 @@ val appModule = module {
     viewModel {
         UserSettingsViewModel(
             getUserUseCase = get(),
-            saveUserUseCase = get()
+            saveUserUseCase = get(),
+            validateUserNameUseCase = get()
         )
     }
 }

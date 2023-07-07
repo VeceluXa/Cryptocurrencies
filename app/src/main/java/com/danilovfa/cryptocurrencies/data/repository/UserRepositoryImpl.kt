@@ -13,10 +13,12 @@ class UserRepositoryImpl(
     private val dao: CryptocurrencyDao
 ) : UserRepository {
     private val userMapper = UserEntityMapper()
-    override suspend fun getUser(): User {
-        val user: User
+    override suspend fun getUser(): User? {
+        var user: User? = null
         withContext(ioDispatcher) {
-            user = userMapper.fromEntity(dao.getUser(0))
+            dao.getUser(0)?.let { entity ->
+                user = userMapper.fromEntity(entity)
+            }
         }
         return user
     }

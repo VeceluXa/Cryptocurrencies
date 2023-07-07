@@ -6,6 +6,9 @@ import com.danilovfa.cryptocurrencies.data.remote.CryptocurrencyAPI
 import com.danilovfa.cryptocurrencies.data.repository.CryptocurrencyLocalRepositoryImpl
 import com.danilovfa.cryptocurrencies.data.repository.CryptocurrencyRemoteRepositoryImpl
 import com.danilovfa.cryptocurrencies.data.repository.UserRepositoryImpl
+import com.danilovfa.cryptocurrencies.domain.repository.CryptocurrencyLocalRepository
+import com.danilovfa.cryptocurrencies.domain.repository.CryptocurrencyRemoteRepository
+import com.danilovfa.cryptocurrencies.domain.repository.UserRepository
 import com.danilovfa.cryptocurrencies.utils.Constants.Companion.BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -54,7 +57,7 @@ val dataModule = module {
     }
 
     ///////////// Repositories ///////////////
-    single { CryptocurrencyLocalRepositoryImpl(remoteRepository = get()) }
-    single { CryptocurrencyRemoteRepositoryImpl(api = get()) }
-    single { UserRepositoryImpl(dao = get()) }
+    single<CryptocurrencyLocalRepository> { CryptocurrencyLocalRepositoryImpl(remoteRepository = get()) }
+    single<CryptocurrencyRemoteRepository> { CryptocurrencyRemoteRepositoryImpl(api = get()) }
+    single<UserRepository> { UserRepositoryImpl(dao = get()) }
 }
