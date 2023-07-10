@@ -1,5 +1,6 @@
 package com.danilovfa.cryptocurrencies.app.viewmodel
 
+import android.content.ContentResolver
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -37,6 +38,9 @@ class UserSettingsViewModel(
     private val _dateOfBirth = MutableStateFlow("")
     val dateOfBirth: StateFlow<String> = _dateOfBirth
 
+    private val _avatarUri = MutableStateFlow(Uri.EMPTY)
+    val avatarUri: StateFlow<Uri> = _avatarUri
+
     fun saveUser(): Int {
         val isFirstNameValid = validateUserNameUseCase.execute(firstName.value)
         val isLastNameValid = validateUserNameUseCase.execute(lastName.value)
@@ -52,7 +56,7 @@ class UserSettingsViewModel(
             firstName = firstName.value,
             lastName = lastName.value,
             dateOfBirth = strToLocalDate(dateOfBirth.value),
-            avatarUri = Uri.EMPTY
+            avatarUri = avatarUri.value
         )
 
         viewModelScope.launch {
@@ -94,12 +98,17 @@ class UserSettingsViewModel(
         _dateOfBirth.value = format.format(calendar.time)
     }
 
+    fun saveAvatar(uri: Uri) {
+        _avatarUri.value = uri
+    }
+
     fun getUser() {
         viewModelScope.launch {
             viewModelScope.async { getUserUseCase.execute() }.await()?.let { user ->
                 _firstName.value = user.firstName
                 _lastName.value = user.lastName
                 _dateOfBirth.value = localDateToStr(user.dateOfBirth)
+                _avatarUri.value = user.avatarUri
             }
         }
     }

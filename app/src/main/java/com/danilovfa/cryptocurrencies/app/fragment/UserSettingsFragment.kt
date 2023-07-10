@@ -1,5 +1,6 @@
 package com.danilovfa.cryptocurrencies.app.fragment
 
+import android.app.AlertDialog
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,25 +10,39 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.FileProvider
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.danilovfa.cryptocurrencies.R
 import com.danilovfa.cryptocurrencies.app.MainActivity
 import com.danilovfa.cryptocurrencies.app.viewmodel.UserSettingsViewModel
 import com.danilovfa.cryptocurrencies.databinding.FragmentUserSettingsBinding
-import com.danilovfa.cryptocurrencies.domain.model.User
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.io.File
 
 class UserSettingsFragment : Fragment(), MenuProvider {
     private var _binding: FragmentUserSettingsBinding? = null
     private val binding get() = _binding!!
     private val viewModel: UserSettingsViewModel by viewModel()
+
+    private val pickFromGalleryResultLauncher =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            if (uri != null)
+                viewModel.saveAvatar(uri)
+        }
+
+    private val takePictureResultLauncher =
+        registerForActivityResult(ActivityResultContracts.TakePicture()) { isCompleted ->
+            if (isCompleted)
+                viewModel.saveAvatar(getInternalAvatarUri())
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,6 +64,7 @@ class UserSettingsFragment : Fragment(), MenuProvider {
         (requireActivity() as MainActivity).title = getString(R.string.settings)
         viewModel.getUser()
         setDatePicker()
+        setAvatarDialog()
         observeStates()
     }
 
@@ -69,7 +85,50 @@ class UserSettingsFragment : Fragment(), MenuProvider {
                     binding.dateOfBirthEditText.setText(dateOfBirth)
                 }
             }
+            launch {
+                viewModel.avatarUri.collect { avatarUri ->
+                    setAvatar(avatarUri)
+                }
+            }
         }
+    }
+
+    private fun setAvatarDialog() {
+        binding.avatarSelectionButton.setOnClickListener {
+            val dialog = AlertDialog.Builder(requireContext())
+                .setTitle(R.string.download_photo)
+                .setItems(R.array.avatar_dialog_array) { _, which ->
+                    when (which) {
+                        0 -> takePictureResultLauncher.launch(getInternalAvatarUri())
+                        1 -> pickFromGalleryResultLauncher.launch("image/*")
+                    }
+                }
+                .create()
+            dialog.show()
+        }
+    }
+
+    private fun setAvatar(uri: Uri) {
+        Glide
+            .with(this)
+            .load(uri)
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .centerCrop()
+            .placeholder(R.drawable.baseline_person_24)
+            .into(binding.avatarImageView)
+    }
+
+    private fun getInternalAvatarUri(): Uri {
+        val tempImage = File(
+            requireActivity().applicationContext.filesDir,
+            getString(R.string.avatar_image_path)
+        )
+        return FileProvider.getUriForFile(
+            requireActivity().applicationContext,
+            getString(R.string.authorities),
+            tempImage
+        )
     }
 
     private fun setDatePicker() {
