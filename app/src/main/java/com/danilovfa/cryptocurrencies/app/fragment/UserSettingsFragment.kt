@@ -11,6 +11,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.danilovfa.cryptocurrencies.R
 import com.danilovfa.cryptocurrencies.app.MainActivity
 import com.danilovfa.cryptocurrencies.app.viewmodel.UserSettingsViewModel
@@ -18,10 +20,9 @@ import com.danilovfa.cryptocurrencies.databinding.FragmentUserSettingsBinding
 import com.danilovfa.cryptocurrencies.domain.model.User
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
 
 class UserSettingsFragment : Fragment(), MenuProvider {
     private var _binding: FragmentUserSettingsBinding? = null
@@ -46,8 +47,29 @@ class UserSettingsFragment : Fragment(), MenuProvider {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (requireActivity() as MainActivity).title = getString(R.string.settings)
-        setUser()
+        viewModel.getUser()
         setDatePicker()
+        observeStates()
+    }
+
+    private fun observeStates() {
+        lifecycleScope.launch {
+            launch {
+                viewModel.firstName.collect { firstName ->
+                    binding.firstNameEditText.setText(firstName)
+                }
+            }
+            launch {
+                viewModel.lastName.collect { lastName ->
+                    binding.lastNameEditText.setText(lastName)
+                }
+            }
+            launch {
+                viewModel.dateOfBirth.collect { dateOfBirth ->
+                    binding.dateOfBirthEditText.setText(dateOfBirth)
+                }
+            }
+        }
     }
 
     private fun setDatePicker() {
@@ -60,34 +82,16 @@ class UserSettingsFragment : Fragment(), MenuProvider {
             if (!datePicker.isAdded) {
                 datePicker.show(parentFragmentManager, "DATE_OF_BIRTH_PICKER")
                 datePicker.addOnPositiveButtonClickListener { epoch ->
-                    val calendar = Calendar.getInstance()
-                    calendar.timeInMillis = epoch
-                    val format = SimpleDateFormat("dd.MM.yyyy", Locale.US)
-                    val formattedDate = format.format(calendar.time)
-                    binding.dateOfBirthEditText.setText(formattedDate)
+                    viewModel.saveDateOfBirth(epoch)
                 }
             }
         }
     }
 
-    private fun setUser() {
-        val user = viewModel.getUser() ?: return
-        binding.apply {
-            firstNameEditText.setText(user.firstName)
-            lastNameEditText.setText(user.lastName)
-            dateOfBirthEditText.setText(user.dateOfBirth?.toString() ?: "")
-            avatarImageView.setImageURI(user.avatarUri)
-        }
-    }
-
     private fun saveUser() {
-        val user = User(
-            firstName = binding.firstNameEditText.text.toString(),
-            lastName = binding.lastNameEditText.text.toString(),
-            dateOfBirth = null,
-            avatarUri = Uri.EMPTY
-        )
-        val response = viewModel.saveUser(user)
+        viewModel.saveFirstName(binding.firstNameEditText.text.toString())
+        viewModel.saveLastName(binding.lastNameEditText.text.toString())
+        val response = viewModel.saveUser()
         Snackbar.make(binding.settingsCoordinatorLayout, getString(response), Snackbar.LENGTH_LONG)
             .show()
     }
@@ -102,6 +106,7 @@ class UserSettingsFragment : Fragment(), MenuProvider {
                 saveUser()
                 true
             }
+
             else -> false
         }
     }

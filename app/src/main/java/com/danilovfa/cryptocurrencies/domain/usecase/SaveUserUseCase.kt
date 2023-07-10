@@ -7,6 +7,6 @@ class SaveUserUseCase(
     private val repository: UserRepository
 ) {
     suspend fun execute(user: User) {
-        repository.getUser()
+        repository.saveUser(user)
     }
 }
