@@ -16,8 +16,12 @@ import com.danilovfa.cryptocurrencies.app.MainActivity
 import com.danilovfa.cryptocurrencies.app.viewmodel.UserSettingsViewModel
 import com.danilovfa.cryptocurrencies.databinding.FragmentUserSettingsBinding
 import com.danilovfa.cryptocurrencies.domain.model.User
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class UserSettingsFragment : Fragment(), MenuProvider {
     private var _binding: FragmentUserSettingsBinding? = null
@@ -42,6 +46,38 @@ class UserSettingsFragment : Fragment(), MenuProvider {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (requireActivity() as MainActivity).title = getString(R.string.settings)
+        setUser()
+        setDatePicker()
+    }
+
+    private fun setDatePicker() {
+        val datePicker = MaterialDatePicker.Builder.datePicker()
+            .setTitleText(getString(R.string.select_your_birth_day))
+            .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+            .setTheme(R.style.ThemeOverlay_App_MaterialCalendar)
+            .build()
+        binding.dateOfBirthEditText.setOnClickListener {
+            if (!datePicker.isAdded) {
+                datePicker.show(parentFragmentManager, "DATE_OF_BIRTH_PICKER")
+                datePicker.addOnPositiveButtonClickListener { epoch ->
+                    val calendar = Calendar.getInstance()
+                    calendar.timeInMillis = epoch
+                    val format = SimpleDateFormat("dd.MM.yyyy", Locale.US)
+                    val formattedDate = format.format(calendar.time)
+                    binding.dateOfBirthEditText.setText(formattedDate)
+                }
+            }
+        }
+    }
+
+    private fun setUser() {
+        val user = viewModel.getUser() ?: return
+        binding.apply {
+            firstNameEditText.setText(user.firstName)
+            lastNameEditText.setText(user.lastName)
+            dateOfBirthEditText.setText(user.dateOfBirth?.toString() ?: "")
+            avatarImageView.setImageURI(user.avatarUri)
+        }
     }
 
     private fun saveUser() {
@@ -66,7 +102,6 @@ class UserSettingsFragment : Fragment(), MenuProvider {
                 saveUser()
                 true
             }
-
             else -> false
         }
     }

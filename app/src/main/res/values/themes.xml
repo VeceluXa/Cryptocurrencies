@@ -5,9 +5,5 @@
         <item name="android:fontFamily">@font/roboto</item>
     </style>
 
-    <style name="BottomNavigationCustomActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-        <item name="android:color">@color/transparent</item>
-    </style>
-
     <style name="Theme.Cryptocurrencies" parent="Base.Theme.Cryptocurrencies" />
 </resources>
