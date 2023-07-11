@@ -1,6 +1,5 @@
 package com.danilovfa.cryptocurrencies.data.local.model
 
-import android.net.Uri
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.time.LocalDate
@@ -11,6 +10,5 @@ data class UserEntity(
     val id: Int = 0,
     val firstName: String,
     val lastName: String,
-    val dateOfBirth: LocalDate?,
-    val avatarUri: Uri
+    val dateOfBirth: LocalDate?
 )

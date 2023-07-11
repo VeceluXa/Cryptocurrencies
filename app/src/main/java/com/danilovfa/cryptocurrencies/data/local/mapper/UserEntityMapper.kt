@@ -9,8 +9,7 @@ class UserEntityMapper : Mapper<UserEntity, User> {
         return User(
             firstName = entity.firstName,
             lastName = entity.lastName,
-            dateOfBirth = entity.dateOfBirth,
-            avatarUri = entity.avatarUri
+            dateOfBirth = entity.dateOfBirth
         )
     }
 
@@ -18,8 +17,7 @@ class UserEntityMapper : Mapper<UserEntity, User> {
         return UserEntity(
             firstName = domain.firstName,
             lastName = domain.lastName,
-            dateOfBirth = domain.dateOfBirth,
-            avatarUri = domain.avatarUri
+            dateOfBirth = domain.dateOfBirth
         )
     }
 }

@@ -34,14 +34,16 @@ class UserSettingsFragment : Fragment(), MenuProvider {
 
     private val pickFromGalleryResultLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            if (uri != null)
-                viewModel.saveAvatar(uri)
+            if (uri != null) {
+                viewModel.saveGalleryAvatar(requireContext(), uri)
+                updateAvatar()
+            }
         }
 
     private val takePictureResultLauncher =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { isCompleted ->
             if (isCompleted)
-                viewModel.saveAvatar(getInternalAvatarUri())
+                updateAvatar()
         }
 
     override fun onCreateView(
@@ -63,6 +65,7 @@ class UserSettingsFragment : Fragment(), MenuProvider {
         super.onViewCreated(view, savedInstanceState)
         (requireActivity() as MainActivity).title = getString(R.string.settings)
         viewModel.getUser()
+        setAvatar(viewModel.getInternalAvatarUri(requireContext()))
         setDatePicker()
         setAvatarDialog()
         observeStates()
@@ -85,11 +88,6 @@ class UserSettingsFragment : Fragment(), MenuProvider {
                     binding.dateOfBirthEditText.setText(dateOfBirth)
                 }
             }
-            launch {
-                viewModel.avatarUri.collect { avatarUri ->
-                    setAvatar(avatarUri)
-                }
-            }
         }
     }
 
@@ -99,7 +97,9 @@ class UserSettingsFragment : Fragment(), MenuProvider {
                 .setTitle(R.string.download_photo)
                 .setItems(R.array.avatar_dialog_array) { _, which ->
                     when (which) {
-                        0 -> takePictureResultLauncher.launch(getInternalAvatarUri())
+                        0 -> takePictureResultLauncher
+                            .launch(viewModel.getInternalAvatarUri(requireContext()))
+
                         1 -> pickFromGalleryResultLauncher.launch("image/*")
                     }
                 }
@@ -119,16 +119,11 @@ class UserSettingsFragment : Fragment(), MenuProvider {
             .into(binding.avatarImageView)
     }
 
-    private fun getInternalAvatarUri(): Uri {
-        val tempImage = File(
-            requireActivity().applicationContext.filesDir,
-            getString(R.string.avatar_image_path)
-        )
-        return FileProvider.getUriForFile(
-            requireActivity().applicationContext,
-            getString(R.string.authorities),
-            tempImage
-        )
+    private fun updateAvatar() {
+        setAvatar(viewModel.getInternalAvatarUri(requireContext()))
+        Snackbar
+            .make(binding.settingsCoordinatorLayout, R.string.update_avatar, Snackbar.LENGTH_SHORT)
+            .show()
     }
 
     private fun setDatePicker() {

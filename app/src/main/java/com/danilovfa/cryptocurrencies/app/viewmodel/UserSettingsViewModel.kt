@@ -1,8 +1,9 @@
 package com.danilovfa.cryptocurrencies.app.viewmodel
 
-import android.content.ContentResolver
+import android.content.Context
 import android.net.Uri
 import android.util.Log
+import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.danilovfa.cryptocurrencies.R
@@ -16,6 +17,8 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -38,9 +41,6 @@ class UserSettingsViewModel(
     private val _dateOfBirth = MutableStateFlow("")
     val dateOfBirth: StateFlow<String> = _dateOfBirth
 
-    private val _avatarUri = MutableStateFlow(Uri.EMPTY)
-    val avatarUri: StateFlow<Uri> = _avatarUri
-
     fun saveUser(): Int {
         val isFirstNameValid = validateUserNameUseCase.execute(firstName.value)
         val isLastNameValid = validateUserNameUseCase.execute(lastName.value)
@@ -55,8 +55,7 @@ class UserSettingsViewModel(
         val user = User(
             firstName = firstName.value,
             lastName = lastName.value,
-            dateOfBirth = strToLocalDate(dateOfBirth.value),
-            avatarUri = avatarUri.value
+            dateOfBirth = strToLocalDate(dateOfBirth.value)
         )
 
         viewModelScope.launch {
@@ -98,8 +97,44 @@ class UserSettingsViewModel(
         _dateOfBirth.value = format.format(calendar.time)
     }
 
-    fun saveAvatar(uri: Uri) {
-        _avatarUri.value = uri
+    fun saveGalleryAvatar(context: Context, uri: Uri): Boolean {
+        val inputStream = context.contentResolver.openInputStream(uri)
+        val outputStream = context.contentResolver.openOutputStream(getInternalAvatarUri(context))
+
+        try {
+            inputStream?.let { input ->
+                outputStream?.let { output ->
+                    val buffer = ByteArray(4 * 1024) // 4 KB buffer (adjust the size as needed)
+                    var bytesRead: Int
+
+                    while (input.read(buffer).also { bytesRead = it } != -1) {
+                        output.write(buffer, 0, bytesRead)
+                    }
+
+                    return true
+                }
+            }
+        } catch (e: IOException) {
+            // Handle the exception, e.g., show an error message
+            e.printStackTrace()
+        } finally {
+            inputStream?.close()
+            outputStream?.close()
+        }
+
+        return false
+    }
+
+    fun getInternalAvatarUri(context: Context): Uri {
+        val tempImage = File(
+            context.applicationContext.filesDir,
+            context.getString(R.string.avatar_image_path)
+        )
+        return FileProvider.getUriForFile(
+            context.applicationContext,
+            context.getString(R.string.authorities),
+            tempImage
+        )
     }
 
     fun getUser() {
@@ -108,7 +143,6 @@ class UserSettingsViewModel(
                 _firstName.value = user.firstName
                 _lastName.value = user.lastName
                 _dateOfBirth.value = localDateToStr(user.dateOfBirth)
-                _avatarUri.value = user.avatarUri
             }
         }
     }
