@@ -6,7 +6,7 @@ import com.danilovfa.cryptocurrencies.domain.repository.UserRepository
 class SaveUserUseCase(
     private val repository: UserRepository
 ) {
-    fun execute(user: User) {
-        TODO()
+    suspend fun execute(user: User) {
+        repository.saveUser(user)
     }
 }

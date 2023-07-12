@@ -70,6 +70,9 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:2.6.0")
     implementation("androidx.navigation:navigation-ui-ktx:2.6.0")
 
+    // Glide
+    implementation("com.github.bumptech.glide:glide:4.15.1")
+
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
 }
 

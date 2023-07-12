@@ -1,14 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".app.fragment.UserSettingsFragment">
+    tools:context=".app.fragment.UserSettingsFragment"
+    android:id="@+id/settingsCoordinatorLayout">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
 
-</FrameLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/avatarImageView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/baseline_person_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/avatarSelectionButton"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:background="@color/black_semi_transparent"
+                android:contentDescription="@string/avatar"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/outline_camera_alt_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:hint="@string/first_name"
+            android:textColorHint="@color/grey"
+            app:boxStrokeColor="@color/grey"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/firstNameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:singleLine="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout2"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:hint="@string/last_name"
+            android:textColorHint="@color/grey"
+            app:boxStrokeColor="@color/grey"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/lastNameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:singleLine="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/dateOfBirthLayout"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:hint="@string/date_of_birth"
+            android:textColorHint="#C4C4C4"
+            app:boxStrokeColor="#C4C4C4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/dateOfBirthEditText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:editable="false"
+                android:enabled="true"
+                android:focusable="false"
+                android:inputType="none"
+                android:singleLine="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
