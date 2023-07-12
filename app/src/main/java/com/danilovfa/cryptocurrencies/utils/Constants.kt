@@ -7,5 +7,6 @@ class Constants {
         const val PRECISION_DEFAULT = 2
         const val PER_PAGE_DEFAULT = 20
         const val LOCALE_DEFAULT = "en"
+        const val SAVE_FILE_BUFFER_SIZE = 4 * 1024 // 4 KB buffer (adjust the size as needed)
     }
 }

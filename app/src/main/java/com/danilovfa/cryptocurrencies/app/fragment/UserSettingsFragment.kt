@@ -1,7 +1,6 @@
 package com.danilovfa.cryptocurrencies.app.fragment
 
 import android.app.AlertDialog
-import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,21 +10,19 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.FileProvider
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.danilovfa.cryptocurrencies.R
 import com.danilovfa.cryptocurrencies.app.MainActivity
 import com.danilovfa.cryptocurrencies.app.viewmodel.UserSettingsViewModel
 import com.danilovfa.cryptocurrencies.databinding.FragmentUserSettingsBinding
+import com.danilovfa.cryptocurrencies.utils.loadImageByUri
+import com.danilovfa.cryptocurrencies.utils.showListDialog
+import com.danilovfa.cryptocurrencies.utils.snack
 import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.io.File
 
 class UserSettingsFragment : Fragment(), MenuProvider {
     private var _binding: FragmentUserSettingsBinding? = null
@@ -65,7 +62,10 @@ class UserSettingsFragment : Fragment(), MenuProvider {
         super.onViewCreated(view, savedInstanceState)
         (requireActivity() as MainActivity).title = getString(R.string.settings)
         viewModel.getUser()
-        setAvatar(viewModel.getInternalAvatarUri(requireContext()))
+        loadImageByUri(
+            image = viewModel.getInternalAvatarUri(requireContext()),
+            container = binding.avatarImageView
+        )
         setDatePicker()
         setAvatarDialog()
         observeStates()
@@ -93,37 +93,26 @@ class UserSettingsFragment : Fragment(), MenuProvider {
 
     private fun setAvatarDialog() {
         binding.avatarSelectionButton.setOnClickListener {
-            val dialog = AlertDialog.Builder(requireContext())
-                .setTitle(R.string.download_photo)
-                .setItems(R.array.avatar_dialog_array) { _, which ->
-                    when (which) {
-                        0 -> takePictureResultLauncher
-                            .launch(viewModel.getInternalAvatarUri(requireContext()))
+            requireContext().showListDialog(
+                title = R.string.download_photo,
+                items = R.array.avatar_dialog_array,
+            ) { id ->
+                when (id) {
+                    0 -> takePictureResultLauncher
+                        .launch(viewModel.getInternalAvatarUri(requireContext()))
 
-                        1 -> pickFromGalleryResultLauncher.launch("image/*")
-                    }
+                    1 -> pickFromGalleryResultLauncher.launch("image/*")
                 }
-                .create()
-            dialog.show()
+            }
         }
     }
 
-    private fun setAvatar(uri: Uri) {
-        Glide
-            .with(this)
-            .load(uri)
-            .skipMemoryCache(true)
-            .diskCacheStrategy(DiskCacheStrategy.NONE)
-            .centerCrop()
-            .placeholder(R.drawable.baseline_person_24)
-            .into(binding.avatarImageView)
-    }
-
     private fun updateAvatar() {
-        setAvatar(viewModel.getInternalAvatarUri(requireContext()))
-        Snackbar
-            .make(binding.settingsCoordinatorLayout, R.string.update_avatar, Snackbar.LENGTH_SHORT)
-            .show()
+        loadImageByUri(
+            image = viewModel.getInternalAvatarUri(requireContext()),
+            container = binding.avatarImageView
+        )
+        binding.settingsCoordinatorLayout.snack(R.string.update_avatar)
     }
 
     private fun setDatePicker() {
@@ -146,8 +135,7 @@ class UserSettingsFragment : Fragment(), MenuProvider {
         viewModel.saveFirstName(binding.firstNameEditText.text.toString())
         viewModel.saveLastName(binding.lastNameEditText.text.toString())
         val response = viewModel.saveUser()
-        Snackbar.make(binding.settingsCoordinatorLayout, getString(response), Snackbar.LENGTH_LONG)
-            .show()
+        binding.settingsCoordinatorLayout.snack(response)
     }
 
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
