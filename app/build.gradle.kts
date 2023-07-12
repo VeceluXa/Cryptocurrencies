@@ -73,7 +73,11 @@ dependencies {
     // Glide
     implementation("com.github.bumptech.glide:glide:4.15.1")
 
+    // Local Time jdk addon
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
+
+    // Splash Screen API
+    implementation("androidx.core:core-splashscreen:1.0.1")
 }
 
 ksp {
