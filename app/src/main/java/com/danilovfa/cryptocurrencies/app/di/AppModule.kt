@@ -1,6 +1,6 @@
 package com.danilovfa.cryptocurrencies.app.di
 
-import com.danilovfa.cryptocurrencies.app.viewmodel.ActivityViewModel
+import com.danilovfa.cryptocurrencies.app.viewmodel.SplashViewModel
 import com.danilovfa.cryptocurrencies.app.viewmodel.DetailsViewModel
 import com.danilovfa.cryptocurrencies.app.viewmodel.MainViewModel
 import com.danilovfa.cryptocurrencies.app.viewmodel.UserSettingsViewModel
@@ -22,5 +22,5 @@ val appModule = module {
             validateUserNameUseCase = get()
         )
     }
-    viewModel { ActivityViewModel() }
+    viewModel { SplashViewModel() }
 }
