@@ -6,7 +6,7 @@ import com.danilovfa.cryptocurrencies.data.remote.mapper.CryptocurrencyItemDtoMa
 import com.danilovfa.cryptocurrencies.domain.model.CryptocurrenciesOrder
 import com.danilovfa.cryptocurrencies.domain.model.CryptocurrencyDetails
 import com.danilovfa.cryptocurrencies.domain.model.CryptocurrencyItem
-import com.danilovfa.cryptocurrencies.domain.model.Resource
+import com.danilovfa.cryptocurrencies.domain.model.ResponseWrapper
 import com.danilovfa.cryptocurrencies.domain.repository.CryptocurrencyRemoteRepository
 import com.danilovfa.cryptocurrencies.utils.Constants.Companion.ERROR_BODY_IS_NULL
 import kotlinx.coroutines.CoroutineDispatcher
@@ -22,7 +22,7 @@ class CryptocurrencyRemoteRepositoryImpl(
     override suspend fun fetchCryptocurrencies(
         page: Int,
         order: CryptocurrenciesOrder
-    ): Resource<List<CryptocurrencyItem>> {
+    ): ResponseWrapper<List<CryptocurrencyItem>> {
         val apiResponse: Response<List<CryptocurrenciesItemDto>>
         withContext(ioDispatcher) {
             apiResponse = api.getCryptocurrenciesByPage(
@@ -36,15 +36,15 @@ class CryptocurrencyRemoteRepositoryImpl(
                 val data = apiResponse.body()!!.map { dto ->
                     dtoMapper.fromEntity(dto)
                 }
-                Resource.Success(data)
+                ResponseWrapper.Success(data)
             } else
-                Resource.Error(ERROR_BODY_IS_NULL)
+                ResponseWrapper.Error(ERROR_BODY_IS_NULL)
 
         } else {
             if (apiResponse.errorBody() != null)
-                Resource.Error(ERROR_BODY_IS_NULL)
+                ResponseWrapper.Error(ERROR_BODY_IS_NULL)
             else
-                Resource.Error(apiResponse.errorBody()!!.string())
+                ResponseWrapper.Error(apiResponse.errorBody()!!.string())
         }
         return domainResponse
     }
