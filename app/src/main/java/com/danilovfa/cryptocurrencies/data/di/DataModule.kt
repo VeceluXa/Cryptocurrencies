@@ -57,7 +57,7 @@ val dataModule = module {
     }
 
     ///////////// Repositories ///////////////
-    single<CryptocurrencyLocalRepository> { CryptocurrencyLocalRepositoryImpl(remoteRepository = get()) }
+    single<CryptocurrencyLocalRepository> { CryptocurrencyLocalRepositoryImpl(dao = get(), remoteRepository = get()) }
     single<CryptocurrencyRemoteRepository> { CryptocurrencyRemoteRepositoryImpl(api = get()) }
     single<UserRepository> { UserRepositoryImpl(dao = get()) }
 }

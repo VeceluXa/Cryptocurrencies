@@ -1,14 +1,10 @@
 package com.danilovfa.cryptocurrencies.app.fragment
 
-import android.app.AlertDialog
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
@@ -24,9 +20,8 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class UserSettingsFragment : Fragment(), MenuProvider {
-    private var _binding: FragmentUserSettingsBinding? = null
-    private val binding get() = _binding!!
+class UserSettingsFragment :
+    BaseFragment<FragmentUserSettingsBinding>(FragmentUserSettingsBinding::inflate), MenuProvider {
     private val viewModel: UserSettingsViewModel by viewModel()
 
     private val pickFromGalleryResultLauncher =
@@ -39,28 +34,14 @@ class UserSettingsFragment : Fragment(), MenuProvider {
 
     private val takePictureResultLauncher =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { isCompleted ->
-            if (isCompleted)
-                updateAvatar()
+            if (isCompleted) updateAvatar()
         }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentUserSettingsBinding.inflate(inflater, container, false)
-        val menuHost = requireActivity()
-        menuHost.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
-        return binding.root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (requireActivity() as MainActivity).title = getString(R.string.settings)
+        val menuHost = requireActivity()
+        menuHost.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
         viewModel.getUser()
         loadImageByUri(
             image = viewModel.getInternalAvatarUri(requireContext()),
@@ -98,8 +79,11 @@ class UserSettingsFragment : Fragment(), MenuProvider {
                 items = R.array.avatar_dialog_array,
             ) { id ->
                 when (id) {
-                    0 -> takePictureResultLauncher
-                        .launch(viewModel.getInternalAvatarUri(requireContext()))
+                    0 -> takePictureResultLauncher.launch(
+                            viewModel.getInternalAvatarUri(
+                                requireContext()
+                            )
+                        )
 
                     1 -> pickFromGalleryResultLauncher.launch("image/*")
                 }
@@ -119,8 +103,7 @@ class UserSettingsFragment : Fragment(), MenuProvider {
         val datePicker = MaterialDatePicker.Builder.datePicker()
             .setTitleText(getString(R.string.select_your_birth_day))
             .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-            .setTheme(R.style.ThemeOverlay_App_MaterialCalendar)
-            .build()
+            .setTheme(R.style.ThemeOverlay_App_MaterialCalendar).build()
         binding.dateOfBirthEditText.setOnClickListener {
             if (!datePicker.isAdded) {
                 datePicker.show(parentFragmentManager, "DATE_OF_BIRTH_PICKER")

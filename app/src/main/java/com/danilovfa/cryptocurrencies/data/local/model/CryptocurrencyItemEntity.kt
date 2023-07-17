@@ -6,9 +6,10 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "items")
 data class CryptocurrencyItemEntity(
-    @ColumnInfo(name = "item_id")
-    @PrimaryKey(autoGenerate = false)
-    val itemId: String,
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
+    @ColumnInfo(name = "coin_id")
+    val coinId: String,
     val name: String,
     val symbol: String,
     val price: Double,

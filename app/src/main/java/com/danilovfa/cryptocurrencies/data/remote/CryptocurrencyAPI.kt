@@ -20,7 +20,7 @@ interface CryptocurrencyAPI {
      * @param vsCurrency The target currency of market data (usd, eur, jpy, etc.)
      */
     @GET("coins/{id}/market_chart")
-    fun getChart(
+    suspend fun getChart(
         @Path("id") id: String,
         @Query("days") days: String,
         @Query("precision") precision: Int = PRECISION_DEFAULT,
@@ -40,7 +40,7 @@ interface CryptocurrencyAPI {
      * currency price value
      */
     @GET("coins/markets")
-    fun getCryptocurrenciesByPage(
+    suspend fun getCryptocurrenciesByPage(
         @Query("vs_currency") vsCurrency: String = VS_CURRENCY_DEFAULT,
         @Query("order") order: String,
         @Query("per_page") perPage: Int = PER_PAGE_DEFAULT,

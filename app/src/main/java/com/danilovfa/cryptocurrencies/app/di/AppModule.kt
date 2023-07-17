@@ -1,5 +1,6 @@
 package com.danilovfa.cryptocurrencies.app.di
 
+import com.danilovfa.cryptocurrencies.app.viewmodel.SplashViewModel
 import com.danilovfa.cryptocurrencies.app.viewmodel.DetailsViewModel
 import com.danilovfa.cryptocurrencies.app.viewmodel.MainViewModel
 import com.danilovfa.cryptocurrencies.app.viewmodel.UserSettingsViewModel
@@ -8,12 +9,7 @@ import org.koin.dsl.module
 
 val appModule = module {
     viewModel { DetailsViewModel(detailsUseCase = get()) }
-    viewModel {
-        MainViewModel(
-            getCryptocurrenciesByNameUseCase = get(),
-            getCryptocurrenciesByPriceUseCase = get()
-        )
-    }
+    viewModel { MainViewModel(getCryptocurrenciesUseCase = get()) }
     viewModel {
         UserSettingsViewModel(
             getUserUseCase = get(),
@@ -21,4 +17,8 @@ val appModule = module {
             validateUserNameUseCase = get()
         )
     }
+    viewModel { SplashViewModel(
+        clearCacheUseCase = get(),
+        getCryptocurrenciesUseCase = get()
+    ) }
 }
