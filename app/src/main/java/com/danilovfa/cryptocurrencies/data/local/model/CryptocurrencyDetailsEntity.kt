@@ -7,7 +7,7 @@ data class CryptocurrencyDetailsEntity(
     @Embedded
     val itemDetails: CryptocurrencyItemEntity,
     @Relation(
-        parentColumn = "item_id",
+        parentColumn = "coin_id",
         entityColumn = "chart_id"
     )
     val charts: CryptocurrencyChartEntity

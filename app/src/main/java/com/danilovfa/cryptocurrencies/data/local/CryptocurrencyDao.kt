@@ -9,6 +9,9 @@ import com.danilovfa.cryptocurrencies.data.local.model.CryptocurrencyChartEntity
 import com.danilovfa.cryptocurrencies.data.local.model.CryptocurrencyDetailsEntity
 import com.danilovfa.cryptocurrencies.data.local.model.CryptocurrencyItemEntity
 import com.danilovfa.cryptocurrencies.data.local.model.UserEntity
+import com.danilovfa.cryptocurrencies.domain.model.CryptocurrencyItem
+import com.danilovfa.cryptocurrencies.utils.Constants.Companion.PER_PAGE_DEFAULT
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CryptocurrencyDao {
@@ -16,18 +19,21 @@ interface CryptocurrencyDao {
     suspend fun setChart(chart: CryptocurrencyChartEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun setItem(item: CryptocurrencyItemEntity)
+    suspend fun setItems(items: List<CryptocurrencyItemEntity>)
+
+    @Query("SELECT * FROM items LIMIT :limit OFFSET :offset ")
+    fun getItemsByPage(offset: Int, limit: Int = PER_PAGE_DEFAULT): List<CryptocurrencyItemEntity>
 
     @Transaction
-    @Query("SELECT * FROM items WHERE item_id = :id")
+    @Query("SELECT * FROM items WHERE coin_id = :id")
     suspend fun getDetails(id: Int): CryptocurrencyDetailsEntity
-
-    @Query("SELECT * FROM items")
-    suspend fun getItems(): List<CryptocurrencyItemEntity>
 
     @Query("SELECT * FROM users WHERE id = :id")
     suspend fun getUser(id: Int): UserEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveUser(user: UserEntity)
+
+    @Query("DELETE FROM items")
+    suspend fun clearCache()
 }

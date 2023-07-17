@@ -7,7 +7,7 @@ import com.danilovfa.cryptocurrencies.domain.model.CryptocurrencyItem
 class CryptocurrencyItemEntityMapper : Mapper<CryptocurrencyItemEntity, CryptocurrencyItem> {
     override fun fromEntity(entity: CryptocurrencyItemEntity): CryptocurrencyItem {
         return CryptocurrencyItem(
-            id = entity.itemId,
+            id = entity.coinId,
             name = entity.name,
             symbol = entity.symbol,
             price = entity.price,
@@ -18,7 +18,7 @@ class CryptocurrencyItemEntityMapper : Mapper<CryptocurrencyItemEntity, Cryptocu
 
     override fun fromDomain(domain: CryptocurrencyItem): CryptocurrencyItemEntity {
         return CryptocurrencyItemEntity(
-            itemId = domain.id,
+            coinId = domain.id,
             name = domain.name,
             symbol = domain.symbol,
             price = domain.price,
