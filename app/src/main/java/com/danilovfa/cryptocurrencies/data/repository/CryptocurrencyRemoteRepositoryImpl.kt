@@ -2,6 +2,7 @@ package com.danilovfa.cryptocurrencies.data.repository
 
 import com.danilovfa.cryptocurrencies.data.remote.CryptocurrencyAPI
 import com.danilovfa.cryptocurrencies.data.remote.dto.CryptocurrenciesItemDto
+import com.danilovfa.cryptocurrencies.data.remote.dto.ErrorDto
 import com.danilovfa.cryptocurrencies.data.remote.mapper.CryptocurrencyItemDtoMapper
 import com.danilovfa.cryptocurrencies.domain.model.CryptocurrenciesOrder
 import com.danilovfa.cryptocurrencies.domain.model.CryptocurrencyDetails
@@ -9,6 +10,7 @@ import com.danilovfa.cryptocurrencies.domain.model.CryptocurrencyItem
 import com.danilovfa.cryptocurrencies.domain.model.ResponseWrapper
 import com.danilovfa.cryptocurrencies.domain.repository.CryptocurrencyRemoteRepository
 import com.danilovfa.cryptocurrencies.utils.Constants.Companion.ERROR_BODY_IS_NULL
+import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -27,7 +29,7 @@ class CryptocurrencyRemoteRepositoryImpl(
         withContext(ioDispatcher) {
             apiResponse = api.getCryptocurrenciesByPage(
                 page = page,
-                order = order.message
+                order = order.apiMessage
             )
         }
 
@@ -41,10 +43,10 @@ class CryptocurrencyRemoteRepositoryImpl(
                 ResponseWrapper.Error(ERROR_BODY_IS_NULL)
 
         } else {
-            if (apiResponse.errorBody() != null)
-                ResponseWrapper.Error(ERROR_BODY_IS_NULL)
-            else
-                ResponseWrapper.Error(apiResponse.errorBody()!!.string())
+            val jsonString = apiResponse.errorBody()!!.string()
+            val gson = Gson()
+            val error = gson.fromJson(jsonString, ErrorDto::class.java)
+            ResponseWrapper.Error(error.status.errorMessage)
         }
         return domainResponse
     }
