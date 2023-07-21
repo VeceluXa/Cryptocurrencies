@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.util.Log
+import com.danilovfa.cryptocurrencies.utils.extension.TAG
 
 class NetworkStatus(private val context: Context) {
     fun checkInternetConnection(): Boolean {

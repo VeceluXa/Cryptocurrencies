@@ -5,7 +5,7 @@ import com.danilovfa.cryptocurrencies.data.local.CryptocurrencyDao
 import com.danilovfa.cryptocurrencies.data.local.mapper.UserEntityMapper
 import com.danilovfa.cryptocurrencies.domain.model.User
 import com.danilovfa.cryptocurrencies.domain.repository.UserRepository
-import com.danilovfa.cryptocurrencies.utils.TAG
+import com.danilovfa.cryptocurrencies.utils.extension.TAG
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

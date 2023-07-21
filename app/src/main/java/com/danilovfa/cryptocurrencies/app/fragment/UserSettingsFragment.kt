@@ -13,9 +13,9 @@ import com.danilovfa.cryptocurrencies.R
 import com.danilovfa.cryptocurrencies.app.MainActivity
 import com.danilovfa.cryptocurrencies.app.viewmodel.UserSettingsViewModel
 import com.danilovfa.cryptocurrencies.databinding.FragmentUserSettingsBinding
-import com.danilovfa.cryptocurrencies.utils.loadImageByUri
-import com.danilovfa.cryptocurrencies.utils.showListDialog
-import com.danilovfa.cryptocurrencies.utils.snack
+import com.danilovfa.cryptocurrencies.utils.extension.loadImageByUriNonCached
+import com.danilovfa.cryptocurrencies.utils.extension.showListDialog
+import com.danilovfa.cryptocurrencies.utils.extension.snack
 import com.google.android.material.datepicker.MaterialDatePicker
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -43,9 +43,10 @@ class UserSettingsFragment :
         val menuHost = requireActivity()
         menuHost.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
         viewModel.getUser()
-        loadImageByUri(
+        binding.root.loadImageByUriNonCached(
             image = viewModel.getInternalAvatarUri(requireContext()),
-            container = binding.avatarImageView
+            container = binding.avatarImageView,
+            placeholder = R.drawable.baseline_person_24
         )
         setDatePicker()
         setAvatarDialog()
@@ -92,9 +93,10 @@ class UserSettingsFragment :
     }
 
     private fun updateAvatar() {
-        loadImageByUri(
+        binding.root.loadImageByUriNonCached(
             image = viewModel.getInternalAvatarUri(requireContext()),
-            container = binding.avatarImageView
+            container = binding.avatarImageView,
+            placeholder = R.drawable.baseline_person_24
         )
         binding.settingsCoordinatorLayout.snack(R.string.update_avatar)
     }
