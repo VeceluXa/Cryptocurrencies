@@ -1,5 +1,7 @@
 package com.danilovfa.cryptocurrencies.data.repository
 
+import android.content.Context
+import com.danilovfa.cryptocurrencies.R
 import com.danilovfa.cryptocurrencies.data.remote.CryptocurrencyAPI
 import com.danilovfa.cryptocurrencies.data.remote.dto.CryptocurrenciesItemDto
 import com.danilovfa.cryptocurrencies.data.remote.dto.ErrorDto
@@ -14,6 +16,7 @@ import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.koin.java.KoinJavaComponent.get
 import retrofit2.Response
 
 class CryptocurrencyRemoteRepositoryImpl(
@@ -22,15 +25,18 @@ class CryptocurrencyRemoteRepositoryImpl(
 ) : CryptocurrencyRemoteRepository {
     private val dtoMapper = CryptocurrencyItemDtoMapper()
     override suspend fun fetchCryptocurrencies(
-        page: Int,
-        order: CryptocurrenciesOrder
+        page: Int, order: CryptocurrenciesOrder
     ): ResponseWrapper<List<CryptocurrencyItem>> {
         val apiResponse: Response<List<CryptocurrenciesItemDto>>
-        withContext(ioDispatcher) {
-            apiResponse = api.getCryptocurrenciesByPage(
-                page = page,
-                order = order.apiMessage
-            )
+
+        try {
+            withContext(ioDispatcher) {
+                apiResponse = api.getCryptocurrenciesByPage(
+                    page = page, order = order.apiMessage
+                )
+            }
+        } catch (e: Exception) {
+            return ResponseWrapper.Error("No internet connection")
         }
 
         val domainResponse = if (apiResponse.isSuccessful) {
@@ -39,8 +45,7 @@ class CryptocurrencyRemoteRepositoryImpl(
                     dtoMapper.fromEntity(dto)
                 }
                 ResponseWrapper.Success(data)
-            } else
-                ResponseWrapper.Error(ERROR_BODY_IS_NULL)
+            } else ResponseWrapper.Error(ERROR_BODY_IS_NULL)
 
         } else {
             val jsonString = apiResponse.errorBody()!!.string()
