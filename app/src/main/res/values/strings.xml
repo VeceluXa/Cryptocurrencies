@@ -27,6 +27,8 @@
     <string name="cancel">Cancel</string>
     <string name="error">Error</string>
     <string name="sort">Sort</string>
+    <string name="try_again">Try Again</string>
+    <string name="no_connection_to_the_internet">No connection to the internet</string>
     <string-array name="avatar_dialog_array">
         <item>@string/take_a_picture</item>
         <item>@string/pick_from_gallery</item>
