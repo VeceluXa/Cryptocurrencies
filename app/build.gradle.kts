@@ -63,7 +63,6 @@ dependencies {
     val roomVersion = "2.5.2"
     implementation("androidx.room:room-runtime:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
-    implementation("androidx.room:room-paging:$roomVersion")
     ksp("androidx.room:room-compiler:$roomVersion")
 
     // Navigation
@@ -78,6 +77,9 @@ dependencies {
 
     // Splash Screen API
     implementation("androidx.core:core-splashscreen:1.0.1")
+
+    // Swipe to refresh
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
 }
 
 ksp {
