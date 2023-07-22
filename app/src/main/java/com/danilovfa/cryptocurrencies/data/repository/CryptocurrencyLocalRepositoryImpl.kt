@@ -1,6 +1,5 @@
 package com.danilovfa.cryptocurrencies.data.repository
 
-import android.util.Log
 import com.danilovfa.cryptocurrencies.data.local.CryptocurrencyDao
 import com.danilovfa.cryptocurrencies.data.local.mapper.CryptocurrencyItemEntityMapper
 import com.danilovfa.cryptocurrencies.domain.model.CryptocurrenciesOrder

@@ -1,7 +1,5 @@
 package com.danilovfa.cryptocurrencies.data.repository
 
-import android.content.Context
-import com.danilovfa.cryptocurrencies.R
 import com.danilovfa.cryptocurrencies.data.remote.CryptocurrencyAPI
 import com.danilovfa.cryptocurrencies.data.remote.dto.CryptocurrenciesItemDto
 import com.danilovfa.cryptocurrencies.data.remote.dto.ErrorDto
@@ -16,7 +14,6 @@ import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.koin.java.KoinJavaComponent.get
 import retrofit2.Response
 
 class CryptocurrencyRemoteRepositoryImpl(

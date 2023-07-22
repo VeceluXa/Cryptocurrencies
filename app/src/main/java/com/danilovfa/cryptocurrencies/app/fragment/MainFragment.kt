@@ -1,7 +1,6 @@
 package com.danilovfa.cryptocurrencies.app.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -109,7 +108,6 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
             val shouldPaginate = !isLoading && isAtLastItem && isNotAtBeginning &&
                     isTotalMoreThanVisible && isScrolling
             if(shouldPaginate) {
-                Log.d("MyFragment", "onScrolled: Get next page")
                 viewModel.getNextPage()
                 isScrolling = false
             }
