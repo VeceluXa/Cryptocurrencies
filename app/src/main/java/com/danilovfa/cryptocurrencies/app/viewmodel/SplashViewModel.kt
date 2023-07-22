@@ -21,7 +21,7 @@ class SplashViewModel(
         viewModelScope.launch {
             clearCacheUseCase.execute()
             getCryptocurrenciesUseCase
-                .execute(0, CryptocurrenciesOrder.CAPITALIZATION_DESCENDING)
+                .execute(1, CryptocurrenciesOrder.CAPITALIZATION_DESCENDING)
                 .collect { resource ->
                     if (resource is ResponseWrapper.Success || resource is ResponseWrapper.Error)
                         _isLoading.value = false

@@ -1,5 +1,6 @@
 package com.danilovfa.cryptocurrencies.data.repository
 
+import android.util.Log
 import com.danilovfa.cryptocurrencies.data.local.CryptocurrencyDao
 import com.danilovfa.cryptocurrencies.data.local.mapper.CryptocurrencyItemEntityMapper
 import com.danilovfa.cryptocurrencies.domain.model.CryptocurrenciesOrder
@@ -35,7 +36,7 @@ class CryptocurrencyLocalRepositoryImpl(
 
         var items: List<CryptocurrencyItem>
         withContext(ioDispatcher) {
-            items = dao.getItemsByPage(offset = page * PER_PAGE_DEFAULT).map { entity ->
+            items = dao.getItemsByPage(offset = (page - 1) * PER_PAGE_DEFAULT).map { entity ->
                 itemEntityMapper.fromEntity(entity)
             }
         }

@@ -17,6 +17,18 @@
     <string name="take_a_picture">Take a picture</string>
     <string name="pick_from_gallery">Pick from gallery</string>
     <string name="update_avatar">Avatar updated</string>
+    <string name="order_id_ascending">By name ascending</string>
+    <string name="order_id_descending">By name descending</string>
+    <string name="order_capitalization_ascending">By capitalization ascending</string>
+    <string name="order_capitalization_descending">By capitalization descending</string>
+    <string name="order_volume_ascending">By volume ascending</string>
+    <string name="order_volume_descending">By volume descending</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="error">Error</string>
+    <string name="sort">Sort</string>
+    <string name="try_again">Try Again</string>
+    <string name="no_connection_to_the_internet">No connection to the internet</string>
     <string-array name="avatar_dialog_array">
         <item>@string/take_a_picture</item>
         <item>@string/pick_from_gallery</item>
@@ -24,4 +36,5 @@
     <!--  Uri handling for result activity API  -->
     <string name="avatar_image_path">avatar.jpg</string>
     <string name="authorities">com.danilovfa.fileprovider</string>
+    <string name="no_internet_connection">No internet connection</string>
 </resources>

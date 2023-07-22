@@ -12,8 +12,8 @@ import com.danilovfa.cryptocurrencies.domain.usecase.GetUserUseCase
 import com.danilovfa.cryptocurrencies.domain.usecase.SaveUserUseCase
 import com.danilovfa.cryptocurrencies.domain.usecase.ValidateUserNameUseCase
 import com.danilovfa.cryptocurrencies.utils.Constants.Companion.SAVE_FILE_BUFFER_SIZE
-import com.danilovfa.cryptocurrencies.utils.toFormattedString
-import com.danilovfa.cryptocurrencies.utils.toLocalDate
+import com.danilovfa.cryptocurrencies.utils.extension.toFormattedString
+import com.danilovfa.cryptocurrencies.utils.extension.toLocalDate
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

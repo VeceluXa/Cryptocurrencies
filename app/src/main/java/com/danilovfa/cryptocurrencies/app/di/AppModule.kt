@@ -9,7 +9,7 @@ import org.koin.dsl.module
 
 val appModule = module {
     viewModel { DetailsViewModel(detailsUseCase = get()) }
-    viewModel { MainViewModel(getCryptocurrenciesUseCase = get()) }
+    viewModel { MainViewModel(clearCacheUseCase = get(), getCryptocurrenciesUseCase = get()) }
     viewModel {
         UserSettingsViewModel(
             getUserUseCase = get(),
