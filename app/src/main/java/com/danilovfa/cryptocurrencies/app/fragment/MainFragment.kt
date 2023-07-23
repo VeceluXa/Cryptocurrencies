@@ -1,14 +1,20 @@
 package com.danilovfa.cryptocurrencies.app.fragment
 
 import android.os.Bundle
+import android.transition.TransitionInflater
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AbsListView
+import android.widget.TextView
 import androidx.core.view.MenuProvider
+import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -30,6 +36,16 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
     private val viewModel: MainViewModel by viewModel()
     private lateinit var cryptocurrenciesAdapter: CryptocurrenciesPageAdapter
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        sharedElementReturnTransition =
+            TransitionInflater.from(context).inflateTransition(android.R.transition.move)
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         toolbarShowTitle(getString(R.string.cryptocurrencies))
@@ -39,6 +55,13 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
         setupRecyclerView()
         observeResponses()
         initOnRefresh()
+
+        toolbarHideIcon()
+        toolbarHideBackButton()
+        postponeEnterTransition()
+        binding.pagingListView.doOnPreDraw {
+            startPostponedEnterTransition()
+        }
     }
 
     private fun observeResponses() {
@@ -144,9 +167,12 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
         }
     }
 
-    private fun navigateToDetailsScreen(coinId: String) {
+    private fun navigateToDetailsScreen(coinId: String, priceTextView: TextView) {
         val action = MainFragmentDirections.actionMainFragmentToDetailsFragment(coinId)
-        findNavController().navigate(action)
+        val extras = FragmentNavigatorExtras(
+            priceTextView to coinId
+        )
+        findNavController().navigate(action, extras)
     }
 
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -164,9 +190,9 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
         }
     }
 
-    override fun onItemClick(cryptocurrencyItem: CryptocurrencyItem?) {
+    override fun onItemClick(cryptocurrencyItem: CryptocurrencyItem?, priceTextView: TextView) {
         cryptocurrencyItem?.let { coin ->
-            navigateToDetailsScreen(coin.id)
+            navigateToDetailsScreen(coin.id, priceTextView)
         }
     }
 }

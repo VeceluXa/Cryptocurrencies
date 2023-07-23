@@ -3,6 +3,7 @@ package com.danilovfa.cryptocurrencies.app.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -54,10 +55,11 @@ class CryptocurrenciesPageAdapter(private val context: Context) :
         fun bind(cryptocurrencyItem: CryptocurrencyItem?) {
             cryptocurrencyItem?.let { coin ->
                 binding.apply {
-                    root.setOnClickListener { onItemClickListener?.onItemClick(coin) }
+                    root.setOnClickListener { onItemClickListener?.onItemClick(coin, binding.coinPrice) }
                     coinName.text = coin.name
                     coinSymbol.text = coin.symbol
                     coinPrice.text = coin.price.toFormattedString()
+                    coinPrice.transitionName = coin.id
                     coinMarketCap.text = coin.marketCap.toFormattedString()
                     binding.root.loadImageByUrlCached(
                         imageUrl = coin.imageUrl,
@@ -80,6 +82,6 @@ class CryptocurrenciesPageAdapter(private val context: Context) :
     }
 
     interface OnItemClickListener {
-        fun onItemClick(cryptocurrencyItem: CryptocurrencyItem?)
+        fun onItemClick(cryptocurrencyItem: CryptocurrencyItem?, priceTextView: TextView)
     }
 }

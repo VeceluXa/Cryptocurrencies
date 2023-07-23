@@ -2,6 +2,7 @@ package com.danilovfa.cryptocurrencies.app.fragment
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.transition.TransitionInflater
 import android.view.View
 import androidx.core.content.ContextCompat.getColor
 import androidx.lifecycle.lifecycleScope
@@ -23,6 +24,7 @@ import com.github.mikephil.charting.data.LineDataSet
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.concurrent.TimeUnit
 import kotlin.math.abs
 
 class DetailsFragment : BaseFragment<FragmentDetailsBinding>(FragmentDetailsBinding::inflate) {
@@ -33,9 +35,16 @@ class DetailsFragment : BaseFragment<FragmentDetailsBinding>(FragmentDetailsBind
         super.onViewCreated(view, savedInstanceState)
         toolbarHideTitle()
         toolbarShowBackButton()
+        setTransition()
 
         viewModel.getDetails(args.coinId)
         observeResponses()
+    }
+
+    private fun setTransition() {
+        sharedElementEnterTransition =
+            TransitionInflater.from(context).inflateTransition(android.R.transition.move)
+        postponeEnterTransition(250, TimeUnit.MILLISECONDS)
     }
 
     private fun observeResponses() {
@@ -86,6 +95,7 @@ class DetailsFragment : BaseFragment<FragmentDetailsBinding>(FragmentDetailsBind
     private fun setupUiData(data: CryptocurrencyDetails) {
         binding.apply {
             priceTextView.text = priceToString(data.coinDetails.price)
+            priceTextView.transitionName = data.coinDetails.id
             marketCapTextView.text = suffixPriceToString(data.coinDetails.marketCap)
             toolbarShowTitle(data.coinDetails.name)
             addIconToToolbar(data.coinDetails.imageUrl)
