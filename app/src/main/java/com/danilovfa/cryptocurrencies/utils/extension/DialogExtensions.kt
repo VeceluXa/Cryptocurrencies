@@ -6,9 +6,13 @@ import androidx.annotation.ArrayRes
 import androidx.annotation.StringRes
 import com.danilovfa.cryptocurrencies.R
 
-fun Context.showTextDialog(@StringRes title: Int, message: String) {
+fun Context.showTextDialog(@StringRes title: Int, message: String, onOkClick: (() -> Unit)? = null) {
     AlertDialog.Builder(this)
-        .setPositiveButton(R.string.ok, null)
+        .setPositiveButton(R.string.ok) { _, _ ->
+            if (onOkClick != null) {
+                onOkClick()
+            }
+        }
         .setTitle(title)
         .setMessage(message)
         .create()
