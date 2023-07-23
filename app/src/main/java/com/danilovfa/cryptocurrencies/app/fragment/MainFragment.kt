@@ -13,7 +13,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.danilovfa.cryptocurrencies.R
-import com.danilovfa.cryptocurrencies.app.MainActivity
 import com.danilovfa.cryptocurrencies.app.adapter.CryptocurrenciesPageAdapter
 import com.danilovfa.cryptocurrencies.app.viewmodel.MainViewModel
 import com.danilovfa.cryptocurrencies.databinding.FragmentMainBinding
@@ -33,7 +32,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (requireActivity() as MainActivity).title = getString(R.string.cryptocurrencies)
+        toolbarShowTitle(getString(R.string.cryptocurrencies))
         val menuHost = requireActivity()
         menuHost.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
