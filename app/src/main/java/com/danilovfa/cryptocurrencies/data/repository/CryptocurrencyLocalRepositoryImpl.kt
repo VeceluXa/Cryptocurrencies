@@ -1,7 +1,10 @@
 package com.danilovfa.cryptocurrencies.data.repository
 
 import com.danilovfa.cryptocurrencies.data.local.CryptocurrencyDao
+import com.danilovfa.cryptocurrencies.data.local.mapper.CryptocurrencyChartEntityMapper
+import com.danilovfa.cryptocurrencies.data.local.mapper.CryptocurrencyDetailsEntityMapper
 import com.danilovfa.cryptocurrencies.data.local.mapper.CryptocurrencyItemEntityMapper
+import com.danilovfa.cryptocurrencies.data.local.model.CryptocurrencyDetailsEntity
 import com.danilovfa.cryptocurrencies.domain.model.CryptocurrenciesOrder
 import com.danilovfa.cryptocurrencies.domain.model.CryptocurrencyDetails
 import com.danilovfa.cryptocurrencies.domain.model.CryptocurrencyItem
@@ -21,6 +24,9 @@ class CryptocurrencyLocalRepositoryImpl(
     private val remoteRepository: CryptocurrencyRemoteRepository
 ) : CryptocurrencyLocalRepository {
     private val itemEntityMapper = CryptocurrencyItemEntityMapper()
+    private val detailsEntityMapper = CryptocurrencyDetailsEntityMapper()
+    private val chartsEntityMapper = CryptocurrencyChartEntityMapper()
+
     override suspend fun clearCache() {
         withContext(ioDispatcher) {
             dao.clearCache()
@@ -56,7 +62,32 @@ class CryptocurrencyLocalRepositoryImpl(
 
     }
 
-    override suspend fun getCryptocurrencyDetails(id: String): CryptocurrencyDetails {
-        TODO("Not yet implemented")
+    override suspend fun getCryptocurrencyDetails(id: String): Flow<ResponseWrapper<CryptocurrencyDetails>> = flow {
+        emit(ResponseWrapper.Loading())
+
+        var detailsEntity: CryptocurrencyDetailsEntity
+        withContext(ioDispatcher) {
+            detailsEntity = dao.getDetails(id)
+        }
+
+        if (detailsEntity.charts == null) {
+            val chartsResponse = remoteRepository.fetchCryptocurrencyCharts(id)
+
+            if (chartsResponse is ResponseWrapper.Error) {
+                emit(ResponseWrapper.Error(chartsResponse.errorMessage))
+                return@flow
+            }
+
+            withContext(ioDispatcher) {
+                val charts = (chartsResponse as ResponseWrapper.Success).data
+                dao.setChart(chartsEntityMapper.fromDomain(charts))
+            }
+            withContext(ioDispatcher) {
+                detailsEntity = dao.getDetails(id)
+            }
+        }
+
+        val details = detailsEntityMapper.fromEntity(detailsEntity)
+        emit(ResponseWrapper.Success(details))
     }
 }
