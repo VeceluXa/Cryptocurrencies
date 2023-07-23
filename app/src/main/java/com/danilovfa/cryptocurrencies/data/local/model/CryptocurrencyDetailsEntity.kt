@@ -10,5 +10,5 @@ data class CryptocurrencyDetailsEntity(
         parentColumn = "coin_id",
         entityColumn = "chart_id"
     )
-    val charts: CryptocurrencyChartEntity
+    val charts: CryptocurrencyChartEntity?
 )

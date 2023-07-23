@@ -26,7 +26,7 @@ interface CryptocurrencyDao {
 
     @Transaction
     @Query("SELECT * FROM items WHERE coin_id = :id")
-    suspend fun getDetails(id: Int): CryptocurrencyDetailsEntity
+    suspend fun getDetails(id: String): CryptocurrencyDetailsEntity
 
     @Query("SELECT * FROM users WHERE id = :id")
     suspend fun getUser(id: Int): UserEntity?

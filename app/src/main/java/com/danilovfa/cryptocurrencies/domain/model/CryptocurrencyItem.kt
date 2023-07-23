@@ -6,5 +6,6 @@ data class CryptocurrencyItem(
     val symbol: String,
     val price: Double,
     val marketCap: Double,
+    val priceChanged24hPercentage: Double,
     val imageUrl: String
 )

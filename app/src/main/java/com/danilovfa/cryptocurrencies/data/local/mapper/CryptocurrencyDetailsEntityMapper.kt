@@ -12,7 +12,7 @@ class CryptocurrencyDetailsEntityMapper :
     override fun fromEntity(entity: CryptocurrencyDetailsEntity): CryptocurrencyDetails {
         return CryptocurrencyDetails(
             coinDetails = itemMapper.fromEntity(entity.itemDetails),
-            charts = chartsMapper.fromEntity(entity.charts)
+            charts = chartsMapper.fromEntity(entity.charts!!)
         )
     }
 
