@@ -13,9 +13,9 @@ import com.danilovfa.cryptocurrencies.app.MainActivity
 
 typealias Inflate<T> = (LayoutInflater, ViewGroup?, Boolean) -> T
 
-open class BaseFragment<VB: ViewBinding>(
+open class BaseFragment<VB : ViewBinding>(
     private val inflate: Inflate<VB>
-): Fragment() {
+) : Fragment() {
     private var _binding: VB? = null
     val binding get() = _binding!!
 

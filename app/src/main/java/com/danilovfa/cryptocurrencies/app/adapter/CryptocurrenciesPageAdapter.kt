@@ -55,7 +55,12 @@ class CryptocurrenciesPageAdapter(private val context: Context) :
         fun bind(cryptocurrencyItem: CryptocurrencyItem?) {
             cryptocurrencyItem?.let { coin ->
                 binding.apply {
-                    root.setOnClickListener { onItemClickListener?.onItemClick(coin, binding.coinPrice) }
+                    root.setOnClickListener {
+                        onItemClickListener?.onItemClick(
+                            coin,
+                            binding.coinPrice
+                        )
+                    }
                     coinName.text = coin.name
                     coinSymbol.text = coin.symbol
                     coinPrice.text = coin.price.toFormattedString()

@@ -8,6 +8,10 @@ import kotlinx.coroutines.flow.Flow
 
 interface CryptocurrencyLocalRepository {
     suspend fun clearCache()
-    suspend fun getCryptocurrencies(page: Int, order: CryptocurrenciesOrder): Flow<ResponseWrapper<List<CryptocurrencyItem>>>
+    suspend fun getCryptocurrencies(
+        page: Int,
+        order: CryptocurrenciesOrder
+    ): Flow<ResponseWrapper<List<CryptocurrencyItem>>>
+
     suspend fun getCryptocurrencyDetails(id: String): Flow<ResponseWrapper<CryptocurrencyDetails>>
 }

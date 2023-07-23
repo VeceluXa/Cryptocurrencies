@@ -10,7 +10,7 @@ fun String.toLocalDate(): LocalDate? {
     var localDate: LocalDate? = null
     try {
         localDate = LocalDate.parse(this, formatter)
-    } catch(e: DateTimeParseException) {
+    } catch (e: DateTimeParseException) {
         Log.e(TAG, "Failed to parse LocalDate")
     }
     return localDate

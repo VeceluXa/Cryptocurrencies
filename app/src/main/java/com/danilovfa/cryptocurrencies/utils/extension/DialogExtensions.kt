@@ -6,7 +6,11 @@ import androidx.annotation.ArrayRes
 import androidx.annotation.StringRes
 import com.danilovfa.cryptocurrencies.R
 
-fun Context.showTextDialog(@StringRes title: Int, message: String, onOkClick: (() -> Unit)? = null) {
+fun Context.showTextDialog(
+    @StringRes title: Int,
+    message: String,
+    onOkClick: (() -> Unit)? = null
+) {
     AlertDialog.Builder(this)
         .setPositiveButton(R.string.ok) { _, _ ->
             if (onOkClick != null) {
@@ -19,7 +23,11 @@ fun Context.showTextDialog(@StringRes title: Int, message: String, onOkClick: ((
         .show()
 }
 
-fun Context.showListDialog(@StringRes title: Int, @ArrayRes items: Int, onItemClick: (id: Int) -> Unit) {
+fun Context.showListDialog(
+    @StringRes title: Int,
+    @ArrayRes items: Int,
+    onItemClick: (id: Int) -> Unit
+) {
     AlertDialog.Builder(this)
         .setTitle(title)
         .setItems(items) { _, which -> onItemClick(which) }
@@ -31,7 +39,8 @@ fun Context.showRadioListDialog(
     @StringRes title: Int,
     items: Array<String>,
     initialSelectedItemId: Int,
-    onItemSelected: (selectedItem: Int) -> Unit) {
+    onItemSelected: (selectedItem: Int) -> Unit
+) {
     var selectedItem = initialSelectedItemId
     AlertDialog.Builder(this)
         .setTitle(title)

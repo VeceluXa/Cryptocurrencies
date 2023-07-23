@@ -8,7 +8,7 @@ import com.danilovfa.cryptocurrencies.utils.NetworkStatus
 import java.util.Timer
 import java.util.TimerTask
 
-class NetworkService: Service() {
+class NetworkService : Service() {
     private val binder = LocalBinder()
     private val timer = Timer()
     private val interval = 13 * 1000L

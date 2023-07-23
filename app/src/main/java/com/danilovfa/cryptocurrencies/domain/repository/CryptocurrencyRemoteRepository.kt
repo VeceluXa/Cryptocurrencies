@@ -7,6 +7,10 @@ import com.danilovfa.cryptocurrencies.domain.model.CryptocurrencyItem
 import com.danilovfa.cryptocurrencies.domain.model.ResponseWrapper
 
 interface CryptocurrencyRemoteRepository {
-    suspend fun fetchCryptocurrencies(page: Int, order: CryptocurrenciesOrder): ResponseWrapper<List<CryptocurrencyItem>>
+    suspend fun fetchCryptocurrencies(
+        page: Int,
+        order: CryptocurrenciesOrder
+    ): ResponseWrapper<List<CryptocurrencyItem>>
+
     suspend fun fetchCryptocurrencyCharts(id: String): ResponseWrapper<CryptocurrencyChart>
 }

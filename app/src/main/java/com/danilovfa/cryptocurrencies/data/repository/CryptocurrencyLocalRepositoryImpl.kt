@@ -62,32 +62,33 @@ class CryptocurrencyLocalRepositoryImpl(
 
     }
 
-    override suspend fun getCryptocurrencyDetails(id: String): Flow<ResponseWrapper<CryptocurrencyDetails>> = flow {
-        emit(ResponseWrapper.Loading())
+    override suspend fun getCryptocurrencyDetails(id: String): Flow<ResponseWrapper<CryptocurrencyDetails>> =
+        flow {
+            emit(ResponseWrapper.Loading())
 
-        var detailsEntity: CryptocurrencyDetailsEntity
-        withContext(ioDispatcher) {
-            detailsEntity = dao.getDetails(id)
-        }
-
-        if (detailsEntity.charts == null) {
-            val chartsResponse = remoteRepository.fetchCryptocurrencyCharts(id)
-
-            if (chartsResponse is ResponseWrapper.Error) {
-                emit(ResponseWrapper.Error(chartsResponse.errorMessage))
-                return@flow
-            }
-
-            withContext(ioDispatcher) {
-                val charts = (chartsResponse as ResponseWrapper.Success).data
-                dao.setChart(chartsEntityMapper.fromDomain(charts))
-            }
+            var detailsEntity: CryptocurrencyDetailsEntity
             withContext(ioDispatcher) {
                 detailsEntity = dao.getDetails(id)
             }
-        }
 
-        val details = detailsEntityMapper.fromEntity(detailsEntity)
-        emit(ResponseWrapper.Success(details))
-    }
+            if (detailsEntity.charts == null) {
+                val chartsResponse = remoteRepository.fetchCryptocurrencyCharts(id)
+
+                if (chartsResponse is ResponseWrapper.Error) {
+                    emit(ResponseWrapper.Error(chartsResponse.errorMessage))
+                    return@flow
+                }
+
+                withContext(ioDispatcher) {
+                    val charts = (chartsResponse as ResponseWrapper.Success).data
+                    dao.setChart(chartsEntityMapper.fromDomain(charts))
+                }
+                withContext(ioDispatcher) {
+                    detailsEntity = dao.getDetails(id)
+                }
+            }
+
+            val details = detailsEntityMapper.fromEntity(detailsEntity)
+            emit(ResponseWrapper.Success(details))
+        }
 }

@@ -1,6 +1,5 @@
 package com.danilovfa.cryptocurrencies.data.repository
 
-import android.util.Log
 import com.danilovfa.cryptocurrencies.data.remote.CryptocurrencyAPI
 import com.danilovfa.cryptocurrencies.data.remote.dto.ChartDto
 import com.danilovfa.cryptocurrencies.data.remote.dto.CryptocurrenciesItemDto
@@ -99,7 +98,7 @@ class CryptocurrencyRemoteRepositoryImpl(
                 chartDtoResponse = api.getChart(id, days)
             }
         } catch (e: Exception) {
-             return ResponseWrapper.Error("No internet connection")
+            return ResponseWrapper.Error("No internet connection")
         }
 
         return if (chartDtoResponse.isSuccessful) {
@@ -111,7 +110,6 @@ class CryptocurrencyRemoteRepositoryImpl(
         } else {
             val jsonString = chartDtoResponse.errorBody()!!.string()
             val gson = Gson()
-            Log.d("RemoteRepo", "fetchChart: $jsonString")
             val error = gson.fromJson(jsonString, ErrorDto::class.java)
             ResponseWrapper.Error(error.status.errorMessage)
         }

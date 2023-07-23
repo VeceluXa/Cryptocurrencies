@@ -80,10 +80,10 @@ class UserSettingsFragment :
             ) { id ->
                 when (id) {
                     0 -> takePictureResultLauncher.launch(
-                            viewModel.getInternalAvatarUri(
-                                requireContext()
-                            )
+                        viewModel.getInternalAvatarUri(
+                            requireContext()
                         )
+                    )
 
                     1 -> pickFromGalleryResultLauncher.launch("image/*")
                 }

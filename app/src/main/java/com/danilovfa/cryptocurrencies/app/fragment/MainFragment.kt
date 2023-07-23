@@ -129,7 +129,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
             val isTotalMoreThanVisible = totalItemCount >= PER_PAGE_DEFAULT
             val shouldPaginate = !isLoading && isAtLastItem && isNotAtBeginning &&
                     isTotalMoreThanVisible && isScrolling
-            if(shouldPaginate) {
+            if (shouldPaginate) {
                 viewModel.getNextPage()
                 isScrolling = false
             }

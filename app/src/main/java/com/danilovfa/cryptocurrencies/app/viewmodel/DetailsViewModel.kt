@@ -31,9 +31,11 @@ class DetailsViewModel(
                         _isLoading.value = false
                         _errorMessage.value = response.errorMessage
                     }
+
                     is ResponseWrapper.Loading -> {
                         _isLoading.value = true
                     }
+
                     is ResponseWrapper.Success -> {
                         _isLoading.value = false
                         _details.value = response.data
