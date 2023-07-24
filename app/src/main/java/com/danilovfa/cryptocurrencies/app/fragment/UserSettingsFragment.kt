@@ -10,7 +10,6 @@ import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import com.danilovfa.cryptocurrencies.R
-import com.danilovfa.cryptocurrencies.app.MainActivity
 import com.danilovfa.cryptocurrencies.app.viewmodel.UserSettingsViewModel
 import com.danilovfa.cryptocurrencies.databinding.FragmentUserSettingsBinding
 import com.danilovfa.cryptocurrencies.utils.extension.loadImageByUriNonCached
@@ -39,7 +38,7 @@ class UserSettingsFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (requireActivity() as MainActivity).title = getString(R.string.settings)
+        toolbarShowTitle(getString(R.string.settings))
         val menuHost = requireActivity()
         menuHost.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
         viewModel.getUser()
@@ -81,10 +80,10 @@ class UserSettingsFragment :
             ) { id ->
                 when (id) {
                     0 -> takePictureResultLauncher.launch(
-                            viewModel.getInternalAvatarUri(
-                                requireContext()
-                            )
+                        viewModel.getInternalAvatarUri(
+                            requireContext()
                         )
+                    )
 
                     1 -> pickFromGalleryResultLauncher.launch("image/*")
                 }

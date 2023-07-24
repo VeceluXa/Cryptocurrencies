@@ -12,6 +12,7 @@ class CryptocurrencyItemEntityMapper : Mapper<CryptocurrencyItemEntity, Cryptocu
             symbol = entity.symbol,
             price = entity.price,
             marketCap = entity.marketCap,
+            priceChanged24hPercentage = entity.priceChanged24hPercentage,
             imageUrl = entity.imageUrl
         )
     }
@@ -23,6 +24,7 @@ class CryptocurrencyItemEntityMapper : Mapper<CryptocurrencyItemEntity, Cryptocu
             symbol = domain.symbol,
             price = domain.price,
             marketCap = domain.marketCap,
+            priceChanged24hPercentage = domain.priceChanged24hPercentage,
             imageUrl = domain.imageUrl
         )
     }

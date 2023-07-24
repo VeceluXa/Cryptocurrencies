@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 class SplashViewModel(
     private val clearCacheUseCase: ClearCacheUseCase,
     private val getCryptocurrenciesUseCase: GetCryptocurrenciesUseCase
-): ViewModel() {
+) : ViewModel() {
     private val _isLoading = MutableStateFlow(true)
     val isLoading = _isLoading.asStateFlow()
 

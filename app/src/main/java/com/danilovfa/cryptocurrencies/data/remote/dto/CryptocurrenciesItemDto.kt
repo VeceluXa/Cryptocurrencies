@@ -16,8 +16,8 @@ data class CryptocurrenciesItemDto(
     val marketCap: Double,
     @SerializedName("name")
     val name: String,
-    @SerializedName("price_change_24h")
-    val priceChange24h: Double,
+    @SerializedName("price_change_percentage_24h")
+    val priceChangePercentage24h: Double,
     @SerializedName("symbol")
     val symbol: String,
 )

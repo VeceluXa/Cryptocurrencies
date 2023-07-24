@@ -7,7 +7,6 @@ import android.content.ServiceConnection
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.IBinder
-import android.util.Log
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -90,7 +89,6 @@ class MainActivity : AppCompatActivity(), NetworkService.InternetCheckListener {
     }
 
     private fun showNoConnectionDialog() {
-        Log.d("ConnectionDialog", "No connection")
         NoInternetDialogFragment.display(
             fragmentManager = supportFragmentManager,
             context = this

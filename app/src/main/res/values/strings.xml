@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">Cryptocurrencies</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="settings">Settings</string>
     <string name="main">Main</string>
     <string name="cryptocurrencies">Cryptocurrencies</string>
@@ -29,6 +27,11 @@
     <string name="sort">Sort</string>
     <string name="try_again">Try Again</string>
     <string name="no_connection_to_the_internet">No connection to the internet</string>
+    <string name="chart_1d">24H</string>
+    <string name="chart_1w">1W</string>
+    <string name="chart_1m">1M</string>
+    <string name="chart_1y">1Y</string>
+    <string name="chart_max">ALL</string>
     <string-array name="avatar_dialog_array">
         <item>@string/take_a_picture</item>
         <item>@string/pick_from_gallery</item>
@@ -37,4 +40,5 @@
     <string name="avatar_image_path">avatar.jpg</string>
     <string name="authorities">com.danilovfa.fileprovider</string>
     <string name="no_internet_connection">No internet connection</string>
+    <string name="market_cap">Market cap</string>
 </resources>

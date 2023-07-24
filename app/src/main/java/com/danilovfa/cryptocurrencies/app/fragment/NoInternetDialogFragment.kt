@@ -13,7 +13,7 @@ import com.danilovfa.cryptocurrencies.utils.NetworkStatus
 import com.danilovfa.cryptocurrencies.utils.extension.TAG
 import com.danilovfa.cryptocurrencies.utils.extension.snack
 
-class NoInternetDialogFragment(context: Context): DialogFragment() {
+class NoInternetDialogFragment(context: Context) : DialogFragment() {
     private var _binding: DialogNoConnectionBinding? = null
     private val binding get() = _binding!!
 

@@ -15,6 +15,8 @@ data class CryptocurrencyItemEntity(
     val price: Double,
     @ColumnInfo(name = "market_cap")
     val marketCap: Double,
+    @ColumnInfo(name = "price_changed_24h_percentage")
+    val priceChanged24hPercentage: Double,
     @ColumnInfo(name = "image_url")
     val imageUrl: String
 )

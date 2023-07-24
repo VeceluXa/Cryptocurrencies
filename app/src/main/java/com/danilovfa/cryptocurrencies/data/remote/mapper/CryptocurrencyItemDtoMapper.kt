@@ -11,7 +11,8 @@ class CryptocurrencyItemDtoMapper : Mapper<CryptocurrenciesItemDto, Cryptocurren
             name = entity.name,
             symbol = entity.symbol,
             price = entity.currentPrice,
-            marketCap = entity.marketCap.toDouble(),
+            marketCap = entity.marketCap,
+            priceChanged24hPercentage = entity.priceChangePercentage24h,
             imageUrl = entity.image,
         )
     }

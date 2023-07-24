@@ -60,24 +60,27 @@ class MainViewModel(
         if (abs(pageToLoad - loadedPage) > 1) return
 
         viewModelScope.launch {
-            getCryptocurrenciesUseCase.execute(pageToLoad, sortOrder.value).collectLatest { response ->
-                when (response) {
-                    is ResponseWrapper.Error -> {
-                        _isLoading.value = false
-                        _errorMessage.value = response.errorMessage
-                    }
-                    is ResponseWrapper.Loading -> {
-                        _isLoading.value = true
-                        _errorMessage.value = ""
-                    }
-                    is ResponseWrapper.Success -> {
-                        _isLoading.value = false
-                        _errorMessage.value = ""
-                        val mutableList = _cryptocurrencies.value.toMutableList()
-                        _cryptocurrencies.value = mutableList + response.data
+            getCryptocurrenciesUseCase.execute(pageToLoad, sortOrder.value)
+                .collectLatest { response ->
+                    when (response) {
+                        is ResponseWrapper.Error -> {
+                            _isLoading.value = false
+                            _errorMessage.value = response.errorMessage
+                        }
+
+                        is ResponseWrapper.Loading -> {
+                            _isLoading.value = true
+                            _errorMessage.value = ""
+                        }
+
+                        is ResponseWrapper.Success -> {
+                            _isLoading.value = false
+                            _errorMessage.value = ""
+                            val mutableList = _cryptocurrencies.value.toMutableList()
+                            _cryptocurrencies.value = mutableList + response.data
+                        }
                     }
                 }
-            }
             loadedPage += 1
         }
     }

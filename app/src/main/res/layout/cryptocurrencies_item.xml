@@ -70,4 +70,12 @@
         app:layout_constraintEnd_toEndOf="@+id/coin_price"
         app:layout_constraintTop_toBottomOf="@+id/coin_price"
         tools:ignore="SmallSp" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/grey"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

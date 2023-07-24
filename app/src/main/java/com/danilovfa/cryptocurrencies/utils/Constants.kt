@@ -15,5 +15,10 @@ class Constants {
         const val LOCALE_DEFAULT = "en"
         const val SAVE_FILE_BUFFER_SIZE = 4 * 1024 // 4 KB buffer (adjust the size as needed)
         const val ERROR_BODY_IS_NULL = "Body is null"
+        const val CHART_DAY = "1"
+        const val CHART_WEEK = "7"
+        const val CHART_MONTH = "30"
+        const val CHART_YEAR = "365"
+        const val CHART_MAX = "max"
     }
 }
