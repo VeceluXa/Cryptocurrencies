@@ -19,6 +19,8 @@ open class BaseFragment<VB : ViewBinding>(
     private var _binding: VB? = null
     val binding get() = _binding!!
 
+    private var activity: MainActivity? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -30,6 +32,9 @@ open class BaseFragment<VB : ViewBinding>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (requireActivity() is MainActivity) {
+            activity = requireActivity() as MainActivity
+        }
         setup()
     }
 
@@ -39,27 +44,23 @@ open class BaseFragment<VB : ViewBinding>(
     }
 
     fun hideBottomNavigation() {
-        val activity = requireActivity() as MainActivity
-        val bottomNavigationToolbar = activity.binding.bottomNavigationView
-        bottomNavigationToolbar.visibility = View.GONE
+        val bottomNavigationToolbar = activity?.binding?.bottomNavigationView
+        bottomNavigationToolbar?.visibility = View.GONE
     }
 
     fun showBottomNavigation() {
-        val activity = requireActivity() as MainActivity
-        val bottomNavigationToolbar = activity.binding.bottomNavigationView
-        bottomNavigationToolbar.visibility = View.VISIBLE
+        val bottomNavigationToolbar = activity?.binding?.bottomNavigationView
+        bottomNavigationToolbar?.visibility = View.VISIBLE
     }
 
     fun hideAppBar() {
-        val activity = requireActivity() as MainActivity
-        val appBar = activity.binding.appBarLayout
-        appBar.visibility = View.GONE
+        val appBar = activity?.binding?.appBarLayout
+        appBar?.visibility = View.GONE
     }
 
     fun showAppBar() {
-        val activity = requireActivity() as MainActivity
-        val appBar = activity.binding.appBarLayout
-        appBar.visibility = View.VISIBLE
+        val appBar = activity?.binding?.appBarLayout
+        appBar?.visibility = View.VISIBLE
     }
 
     override fun onDestroyView() {
@@ -68,7 +69,7 @@ open class BaseFragment<VB : ViewBinding>(
     }
 
     fun toolbarShowIcon(drawable: Drawable) {
-        (requireActivity() as MainActivity).supportActionBar?.apply {
+        activity?.supportActionBar?.apply {
             setDisplayShowHomeEnabled(true)
             setDisplayUseLogoEnabled(true)
             setLogo(drawable)
@@ -76,7 +77,7 @@ open class BaseFragment<VB : ViewBinding>(
     }
 
     fun toolbarHideIcon() {
-        (requireActivity() as MainActivity).supportActionBar?.apply {
+        activity?.supportActionBar?.apply {
             setDisplayShowHomeEnabled(false)
             setDisplayUseLogoEnabled(false)
             setLogo(null)
@@ -84,7 +85,7 @@ open class BaseFragment<VB : ViewBinding>(
     }
 
     fun toolbarShowBackButton() {
-        (requireActivity() as MainActivity).apply {
+        activity?.apply {
             supportActionBar?.apply {
                 setDisplayHomeAsUpEnabled(true)
                 setHomeAsUpIndicator(R.drawable.eva_arrow_ios_back_outline)
@@ -96,7 +97,7 @@ open class BaseFragment<VB : ViewBinding>(
     }
 
     fun toolbarHideBackButton() {
-        (requireActivity() as MainActivity).apply {
+        activity?.apply {
             supportActionBar?.apply {
                 setDisplayHomeAsUpEnabled(false)
                 setHomeAsUpIndicator(null)
@@ -106,10 +107,10 @@ open class BaseFragment<VB : ViewBinding>(
     }
 
     fun toolbarShowTitle(title: String) {
-        (requireActivity() as MainActivity).title = title
+        activity?.title = title
     }
 
     fun toolbarHideTitle() {
-        (requireActivity() as MainActivity).title = ""
+        activity?.title = ""
     }
 }
