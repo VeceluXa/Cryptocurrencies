@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Base.Theme.MySplash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_screen_animation</item>
+        <item name="windowSplashScreenAnimationDuration">3600</item>
+        <item name="postSplashScreenTheme">@style/Base.Theme.Cryptocurrencies</item>
+    </style>
+</resources>
