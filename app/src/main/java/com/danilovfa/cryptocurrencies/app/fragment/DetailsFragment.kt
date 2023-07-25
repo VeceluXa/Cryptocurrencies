@@ -94,9 +94,9 @@ class DetailsFragment : BaseFragment<FragmentDetailsBinding>(FragmentDetailsBind
 
     private fun setupUiData(data: CryptocurrencyDetails) {
         binding.apply {
-            priceTextView.text = priceToString(data.coinDetails.price)
+            priceTextView.text = viewModel.priceToString(data.coinDetails.price)
             priceTextView.transitionName = data.coinDetails.id
-            marketCapTextView.text = suffixPriceToString(data.coinDetails.marketCap)
+            marketCapTextView.text = viewModel.suffixPriceToString(data.coinDetails.marketCap)
             toolbarShowTitle(data.coinDetails.name)
             addIconToToolbar(data.coinDetails.imageUrl)
             setPriceChangedPercentageText(data.coinDetails.priceChanged24hPercentage)
@@ -123,8 +123,8 @@ class DetailsFragment : BaseFragment<FragmentDetailsBinding>(FragmentDetailsBind
         val max = chart.maxBy { it.price }
 
         binding.apply {
-            chartPriceLowTextView.text = suffixPriceToString(min.price)
-            chartPriceMaxTextView.text = suffixPriceToString(max.price)
+            chartPriceLowTextView.text = viewModel.suffixPriceToString(min.price)
+            chartPriceMaxTextView.text = viewModel.suffixPriceToString(max.price)
         }
 
         configureLineChart()
@@ -182,28 +182,8 @@ class DetailsFragment : BaseFragment<FragmentDetailsBinding>(FragmentDetailsBind
             else
                 setTextColor(getColor(requireContext(), R.color.pink))
 
-            text = priceChangedToString(priceChangedPercentage)
+            text = viewModel.priceChangedToString(priceChangedPercentage)
         }
-    }
-
-    private fun priceChangedToString(number: Double): String {
-        var formattedNumber = String.format("%.${if (number == 0.0) 0 else 2}f", abs(number))
-        val indexOfDecimal = formattedNumber.indexOf('.')
-        formattedNumber = if (indexOfDecimal >= 0) {
-            val trailingZeros = formattedNumber.substring(indexOfDecimal + 1).count { it == '0' }
-            if (trailingZeros > 2) {
-                String.format("%.${trailingZeros}f", number)
-            } else {
-                formattedNumber
-            }
-        } else {
-            formattedNumber
-        }
-
-        return if (number >= 0)
-            "+$formattedNumber %"
-        else
-            "-$formattedNumber %"
     }
 
     private fun addIconToToolbar(url: String) {
@@ -227,26 +207,6 @@ class DetailsFragment : BaseFragment<FragmentDetailsBinding>(FragmentDetailsBind
                 }
 
             })
-    }
-
-    private fun priceToString(price: Double): String {
-        return "$price $"
-    }
-
-    private fun suffixPriceToString(price: Double): String {
-        val suffixes = listOf("", "K", "M", "B", "T")
-        var num = price
-        var suffixIndex = 0
-
-        while (num >= 1000 && suffixIndex < suffixes.lastIndex) {
-            num /= 1000
-            suffixIndex++
-        }
-
-        val formattedString = String.format("%.2f", num)
-        val suffix = suffixes[suffixIndex]
-
-        return "\$ $formattedString $suffix"
     }
 
     override fun onDestroyView() {

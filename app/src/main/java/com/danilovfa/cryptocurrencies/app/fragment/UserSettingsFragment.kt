@@ -115,7 +115,7 @@ class UserSettingsFragment :
         }
     }
 
-    private fun saveUser() {
+    fun saveUser() {
         viewModel.saveFirstName(binding.firstNameEditText.text.toString())
         viewModel.saveLastName(binding.lastNameEditText.text.toString())
         val response = viewModel.saveUser()
